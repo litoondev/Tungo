@@ -91,7 +91,7 @@
   .nav-right{margin-left:auto;display:flex;align-items:center;gap:14px}
   .nav-login{font-size:14.5px;font-weight:600;color:var(--ink);white-space:nowrap;padding:6px 4px;transition:color .15s}
   .nav-login:hover{color:var(--magenta-deep)}
-  @media (max-width:560px){.nav-login{display:none}}
+  @media (max-width:600px){nav .btn-primary{display:none}}
   /* language dropdown */
   .lang-dd{position:relative}
   .lang-btn{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--ink);border:none;border-radius:var(--r-pill);font-family:inherit;font-size:12.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:10px 14px;cursor:pointer;transition:color .2s}
@@ -107,10 +107,36 @@
   .lang-menu button .ch{color:var(--stone);font-weight:600}
   .lang-menu button.on .nm{color:var(--magenta-deep)}
   .lang-menu .bn{font-family:var(--bn)}
+  /* flag chips sized for the nav + comfortable spacing */
+  .lang-btn{gap:9px;padding-left:12px}
+  .lang-btn .fc{width:21px;height:21px;min-width:21px;border-radius:6px;box-shadow:0 1px 2px rgba(24,24,23,.18)}
+  .lang-menu button{gap:12px}
+  .lang-menu button + button{margin-top:3px}
+  .lang-menu button .fc{width:24px;height:24px;min-width:24px;border-radius:7px}
+  .fc-bd{background:#006A4E}
+  .fc-bd::after{content:'';position:absolute;top:50%;left:44%;width:50%;height:50%;transform:translate(-50%,-50%);border-radius:50%;background:#F42A41}
   nav .btn{padding:11px 22px;font-size:14px}
   /* mint on light needs the Ink edge (v3 hard rule) */
   .on-light .btn-primary,nav .btn-primary{border:1px solid rgba(24,24,23,.20)}
-  .menu-btn{display:none;background:none;border:1px solid var(--sand);border-radius:var(--r-pill);color:var(--ink);width:40px;height:40px;font-size:17px;cursor:pointer}
+  .menu-btn{display:none;background:none;border:1px solid var(--sand);border-radius:var(--r-pill);color:var(--ink);width:40px;height:40px;font-size:17px;cursor:pointer;transition:background .15s,border-color .15s}
+  .menu-btn:hover{background:var(--paper)}
+  /* mobile drawer */
+  .nav-pill{position:relative}
+  .mobile-menu{display:none;position:absolute;top:calc(100% + 10px);left:0;right:0;flex-direction:column;gap:3px;
+    background:rgba(255,255,255,.97);backdrop-filter:blur(14px);border:1px solid var(--sand);border-radius:24px;padding:14px;
+    box-shadow:0 24px 70px rgba(24,24,23,.16);z-index:65}
+  .nav-pill.open .mobile-menu{display:flex}
+  .mobile-menu .mm-link{padding:12px 14px;border-radius:13px;color:var(--ink);font-size:15.5px;font-weight:600;transition:background .15s}
+  .mobile-menu .mm-link:hover{background:var(--paper);color:var(--magenta-deep)}
+  .mm-div{height:1px;background:var(--sand);margin:9px 6px}
+  .mm-langs{display:flex;gap:8px;flex-wrap:wrap;padding:2px 6px 6px}
+  .mm-lang{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--sand);background:#fff;border-radius:var(--r-pill);
+    padding:8px 14px;font-family:inherit;font-size:14px;font-weight:600;color:var(--ink);cursor:pointer;transition:border-color .15s,color .15s}
+  .mm-lang.bn{font-family:var(--bn)}
+  .mm-lang .fc{width:20px;height:20px;min-width:20px;border-radius:6px}
+  .mm-lang.on{border-color:var(--magenta);color:var(--magenta-deep)}
+  .mm-cta{display:flex;flex-direction:column;gap:10px;padding:8px 6px 2px}
+  .mm-cta .btn{width:100%;justify-content:center;padding:15px;font-size:16px;border-radius:16px}
   @media (max-width:1080px){nav{padding:0 16px}}
 
   /* ── hero — white canvas with the silk ribbon ── */
@@ -209,14 +235,12 @@
   .fc-sa::after{content:'';position:absolute;left:5px;right:5px;top:20px;height:1.5px;background:#fff;border-radius:2px}
   .fc-jp{background:radial-gradient(circle at 50% 50%, #BC002D 0 30%, #fff 30%)}
   .fc-fr{background:linear-gradient(90deg,#0055A4 0 33.3%,#fff 33.3% 66.6%,#EF4135 66.6%)}
-  .fc-gb{background:linear-gradient(135deg,#012169,#012169)}
+  .fc-gb{background:#012169 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Crect width='60' height='60' fill='%23012169'/%3E%3Cpath d='M0 0 60 60M60 0 0 60' stroke='%23fff' stroke-width='11'/%3E%3Cpath d='M0 0 60 60M60 0 0 60' stroke='%23C8102E' stroke-width='4.5'/%3E%3Cpath d='M30 0V60M0 30H60' stroke='%23fff' stroke-width='19'/%3E%3Cpath d='M30 0V60M0 30H60' stroke='%23C8102E' stroke-width='11'/%3E%3C/svg%3E") center/cover no-repeat}
   .fc-in{background:linear-gradient(180deg,#FF9933 0 33.3%,#fff 33.3% 66.6%,#138808 66.6%)}
   .fc-de{background:linear-gradient(180deg,#000 0 33.3%,#DD0000 33.3% 66.6%,#FFCE00 66.6%)}
   .fc-my{background:linear-gradient(180deg,#CC0001 0 50%,#fff 50%)}
   .fc-cn::after{content:'★';position:absolute;top:1px;left:3px;color:#FFDE00;font-size:11px;line-height:1}
   .fc-kr::after{content:'';position:absolute;top:50%;left:50%;width:13px;height:13px;transform:translate(-50%,-50%);border-radius:50%;background:linear-gradient(180deg,#CD2E3A 50%,#0047A0 50%)}
-  .fc-gb::after{content:'';position:absolute;inset:0;background:linear-gradient(45deg,transparent 44%,#fff 44% 56%,transparent 56%),linear-gradient(-45deg,transparent 44%,#fff 44% 56%,transparent 56%),linear-gradient(0deg,transparent 40%,#fff 40% 60%,transparent 60%),linear-gradient(90deg,transparent 40%,#fff 40% 60%,transparent 60%);}
-  .fc-gb::before{content:'';position:absolute;inset:0;background:linear-gradient(0deg,transparent 43%,#C8102E 43% 57%,transparent 57%),linear-gradient(90deg,transparent 43%,#C8102E 43% 57%,transparent 57%);z-index:1}
   .lg{background:var(--ink);border:1px solid var(--hairline-soft);border-radius:var(--r-card);padding:20px;position:relative;overflow:hidden;transition:border-color .25s,transform .25s,box-shadow .25s;display:flex;align-items:center;gap:15px}
   .lg:hover{transform:translateY(-4px);border-color:var(--aqua);box-shadow:0 18px 44px rgba(24,24,23,.10)}
   .lg .lflag{width:46px;height:46px;min-width:46px;display:flex;align-items:center;justify-content:center;border-radius:13px;background:var(--charcoal);border:1px solid var(--hairline-soft)}
@@ -472,8 +496,8 @@
 
   @media (max-width:1024px){
     .nav-links,.lang-dd{display:none}
-    .menu-btn{display:block;margin-left:auto}
-    .nav-right{margin-left:0}
+    .menu-btn{display:block}
+    .nav-right{margin-left:auto}
     .nav-pill{gap:14px}
     .pron-grid{grid-template-columns:1fr}
     .bento{grid-template-columns:1fr 1fr}
@@ -592,17 +616,35 @@
     <div class="nav-right">
       <div class="lang-dd" id="langDD">
         <button class="lang-btn" id="langBtn" aria-haspopup="listbox" aria-expanded="false">
-          <span class="fl" id="langFlag">🇬🇧</span><span id="langName">English</span><span class="chev">▼</span>
+          <span class="fc fc-gb" id="langFlag"></span><span id="langName">English</span><span class="chev">▼</span>
         </button>
         <div class="lang-menu" role="listbox" aria-label="Site language" id="langMenu">
-          <button class="on" data-fl="🇬🇧"><span class="lflag"><span class="fc fc-gb"></span></span><span class="nm">English</span><span class="ch">›</span></button>
-          <button data-fl="🇧🇩"><span class="fl">🇧🇩</span><span class="nm bn">বাংলা</span><span class="ch">›</span></button>
-          <button data-fl="🇮🇳"><span class="lflag"><span class="fc fc-in"></span></span><span class="nm bn">हिंदी</span><span class="ch">›</span></button>
+          <button class="on" data-fc="fc-gb"><span class="fc fc-gb"></span><span class="nm">English</span><span class="ch">›</span></button>
+          <button data-fc="fc-bd"><span class="fc fc-bd"></span><span class="nm bn">বাংলা</span><span class="ch">›</span></button>
+          <button data-fc="fc-in"><span class="fc fc-in"></span><span class="nm bn">हिंदी</span><span class="ch">›</span></button>
         </div>
       </div>
-      <a class="nav-login" href="#">Log in</a>
+      <a class="nav-login" href="tungo-signin.html">Log in</a>
       <a class="btn btn-primary" href="#pricing">Start free <span class="g">→</span></a>
-      <button class="menu-btn" aria-label="Menu">≡</button>
+      <button class="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">≡</button>
+    </div>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <a class="mm-link" href="#languages">Languages</a>
+      <a class="mm-link" href="#method">Method</a>
+      <a class="mm-link" href="#pricing">Pricing</a>
+      <a class="mm-link" href="#institutions">Institutions</a>
+      <a class="mm-link" href="#about">About</a>
+      <div class="mm-div"></div>
+      <div class="mm-langs">
+        <button type="button" class="mm-lang on" data-fc="fc-gb" data-name="English"><span class="fc fc-gb"></span>English</button>
+        <button type="button" class="mm-lang bn" data-fc="fc-bd" data-name="বাংলা"><span class="fc fc-bd"></span>বাংলা</button>
+        <button type="button" class="mm-lang bn" data-fc="fc-in" data-name="हिंदी"><span class="fc fc-in"></span>हिंदी</button>
+      </div>
+      <div class="mm-cta">
+        <a class="btn btn-ghost" href="tungo-signin.html">Log in</a>
+        <a class="btn btn-primary" href="#pricing">Start free <span class="g">→</span></a>
+      </div>
     </div>
   </div>
 </nav>
@@ -1049,12 +1091,33 @@
   ddBtn.addEventListener('click',e=>{e.stopPropagation();const open=dd.classList.toggle('open');ddBtn.setAttribute('aria-expanded',open);});
   ddMenu.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
     ddMenu.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
-    document.getElementById('langFlag').textContent=b.dataset.fl;
+    document.getElementById('langFlag').className='fc '+b.dataset.fc;
     document.getElementById('langName').textContent=b.querySelector('.nm').textContent;
     dd.classList.remove('open');ddBtn.setAttribute('aria-expanded','false');
   }));
   document.addEventListener('click',e=>{if(!dd.contains(e.target)){dd.classList.remove('open');ddBtn.setAttribute('aria-expanded','false');}});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'){dd.classList.remove('open');ddBtn.setAttribute('aria-expanded','false');}});
+
+  // mobile drawer
+  const navPill=document.querySelector('.nav-pill'), menuBtn=document.querySelector('.menu-btn');
+  function closeMenu(){navPill.classList.remove('open');menuBtn.setAttribute('aria-expanded','false');menuBtn.innerHTML='≡';}
+  menuBtn.addEventListener('click',e=>{
+    e.stopPropagation();
+    const open=navPill.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded',open);
+    menuBtn.innerHTML=open?'✕':'≡';
+  });
+  document.querySelectorAll('.mobile-menu .mm-link, .mobile-menu .mm-cta a').forEach(a=>a.addEventListener('click',closeMenu));
+  document.addEventListener('click',e=>{if(navPill.classList.contains('open') && !navPill.contains(e.target))closeMenu();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();});
+  // mobile language buttons mirror the desktop switcher
+  document.querySelectorAll('.mm-lang').forEach(b=>b.addEventListener('click',()=>{
+    document.querySelectorAll('.mm-lang').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+    document.getElementById('langFlag').className='fc '+b.dataset.fc;
+    document.getElementById('langName').textContent=b.dataset.name;
+    ddMenu.querySelectorAll('button').forEach(x=>{x.classList.toggle('on',x.dataset.fc===b.dataset.fc);});
+    closeMenu();
+  }));
 
   // duplicate marquee content for a seamless loop
   const mq=document.getElementById('mq');if(mq)mq.innerHTML+=mq.innerHTML;

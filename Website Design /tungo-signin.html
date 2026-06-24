@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in — Tungo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,800&family=Instrument+Serif:ital@1&family=Noto+Sans+Bengali:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  /* ════════════════════════════════════════════════════════════
+     TUNGO — Sign in  ·  light "hero banner" palette
+     White canvas, ink text, sand hairlines, Mint CTA (ink-edged),
+     magenta links, citron eyebrow, the aqua→indigo→magenta silk
+     ribbon carried over from the homepage hero as the panel signature.
+     ════════════════════════════════════════════════════════════ */
+  :root{
+    --magenta:#FF1E9A; --magenta-deep:#D6157F;
+    --mint:#11EE92;    --mint-deep:#0CC97A;
+    --indigo:#1D2F6F;
+    --aqua:#6DD6DA;
+    --citron:#6E651A;
+    --success:#1FA34D;
+    --paper:#F4F1EA; --sand:#D9D4C7; --stone:#8E887B; --stone-dark:#A9A296;
+    --ink:#181817;   --charcoal:#22221F; --muted:#44423C;
+    /* design-system login neutrals (exact tokens from the Design System) */
+    --ds-txt:#16181D; --ds-txt2:#525866; --ds-txt3:#868C98;
+    --ds-raised:#F4F5F7; --ds-hair:rgba(16,24,40,0.12); --ds-hair2:rgba(16,24,40,0.06);
+    --serif:'Instrument Serif',Georgia,serif;
+    --bn:'Noto Sans Bengali','Inter',sans-serif;
+    --r-card:24px; --r-pill:999px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{min-height:100vh;background:#FFFFFF;color:var(--ink);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:var(--magenta-deep);text-decoration:none}
+  :focus-visible{outline:2px solid var(--magenta);outline-offset:3px;border-radius:8px}
+  ::selection{background:var(--magenta);color:#fff}
+
+  .auth{display:grid;grid-template-columns:1.05fr 1fr;min-height:100vh}
+
+  /* ── form column (white) ── */
+  .formcol{display:flex;flex-direction:column;padding:28px clamp(24px,5vw,72px);background:#FFFFFF}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .logo{font-size:21px;font-weight:800;letter-spacing:-.02em;color:var(--ink)}
+  .logo .go{color:var(--magenta)}
+  .back{font-size:13.5px;font-weight:600;color:var(--stone);display:inline-flex;align-items:center;gap:6px;transition:color .15s}
+  .back:hover{color:var(--ink)}
+
+  .formwrap{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 0}
+  .form{width:100%;max-width:360px;display:flex;flex-direction:column;gap:18px}
+
+  .eyebrow{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--citron);border:1px solid var(--sand);background:rgba(255,255,255,.7);border-radius:var(--r-pill);padding:6px 14px}
+  .eyebrow::before{content:"";width:5px;height:5px;border-radius:99px;background:var(--citron)}
+
+  .head h1{font-size:clamp(28px,3.4vw,36px);font-weight:600;letter-spacing:-.03em;line-height:1.08;color:var(--ink)}
+  .head h1 .em{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--magenta);font-size:1.05em}
+  .head p{color:var(--muted);font-size:15px;margin-top:8px}
+
+  /* segmented Log in / Sign up */
+  .seg{display:flex;background:var(--ds-raised);border-radius:10px;padding:4px;gap:4px}
+  .seg button{flex:1;border:none;background:none;font:inherit;font-size:14px;font-weight:600;color:var(--ds-txt2);padding:8px;border-radius:7px;cursor:pointer;transition:all .15s}
+  .seg button.on{background:#FFFFFF;color:var(--ds-txt);box-shadow:0 1px 2px rgba(16,24,40,.08)}
+
+  /* email / mobile method toggle */
+  .method{display:inline-flex;background:var(--ds-raised);border-radius:8px;padding:3px;gap:3px;align-self:flex-start}
+  .method button{border:none;background:none;font:inherit;font-size:13px;font-weight:600;color:var(--ds-txt2);padding:6px 16px;border-radius:6px;cursor:pointer;transition:all .15s}
+  .method button.on{background:#FFFFFF;color:var(--ds-txt);box-shadow:0 1px 2px rgba(16,24,40,.08)}
+
+  /* phone field: country code + number */
+  .phonegrp{display:flex;gap:8px}
+  .phone-input{flex:1}
+  .ccdd{position:relative;flex:none}
+  .cctrigger{height:44px;display:inline-flex;align-items:center;gap:7px;background:#FFFFFF;border:1px solid var(--ds-hair);border-radius:8px;padding:0 11px;font:inherit;font-size:15px;font-weight:500;color:var(--ds-txt);cursor:pointer;transition:border-color .15s,box-shadow .15s}
+  .cctrigger:hover{border-color:var(--ds-txt3)}
+  .ccdd.open .cctrigger{border-color:var(--magenta);box-shadow:0 0 0 4px color-mix(in srgb,var(--magenta) 20%,transparent)}
+  .ccchev{font-size:10px;color:var(--ds-txt3)}
+  .ccmenu{position:absolute;top:calc(100% + 6px);left:0;min-width:248px;background:#FFFFFF;border:1px solid var(--ds-hair);border-radius:10px;padding:6px;box-shadow:0 16px 40px rgba(16,24,40,.16);z-index:30;display:none;max-height:248px;overflow:auto}
+  .ccdd.open .ccmenu{display:block}
+  .ccmenu button{display:flex;align-items:center;gap:10px;width:100%;background:none;border:none;border-radius:7px;padding:8px 10px;font:inherit;font-size:14px;color:var(--ds-txt);cursor:pointer;text-align:left;transition:background .12s}
+  .ccmenu button:hover{background:var(--ds-raised)}
+  .ccmenu .ccname{flex:1}
+  .ccmenu .ccd{color:var(--ds-txt2);font-weight:600}
+
+  /* flag chips */
+  .fc{width:20px;height:20px;min-width:20px;border-radius:4px;border:1px solid rgba(16,24,40,.10);overflow:hidden;position:relative;background-size:cover;flex:none;box-shadow:0 1px 2px rgba(16,24,40,.12)}
+  .fc-bd{background:#006A4E}
+  .fc-bd::after{content:'';position:absolute;top:50%;left:44%;width:50%;height:50%;transform:translate(-50%,-50%);border-radius:50%;background:#F42A41}
+  .fc-in{background:linear-gradient(180deg,#FF9933 0 33.3%,#fff 33.3% 66.6%,#138808 66.6%)}
+  .fc-in::after{content:'';position:absolute;top:50%;left:50%;width:5px;height:5px;transform:translate(-50%,-50%);border-radius:50%;border:1.4px solid #1A3A8F}
+  .fc-pk{background:#01411C}
+  .fc-pk::before{content:'';position:absolute;top:0;left:0;bottom:0;width:28%;background:#fff}
+  .fc-us{background:repeating-linear-gradient(#B22234 0 7.69%,#fff 7.69% 15.38%)}
+  .fc-us::before{content:'';position:absolute;top:0;left:0;width:42%;height:53.8%;background:#3C3B6E}
+  .fc-ae{background:linear-gradient(180deg,#00843D 0 33.3%,#fff 33.3% 66.6%,#000 66.6%)}
+  .fc-ae::before{content:'';position:absolute;top:0;left:0;bottom:0;width:26%;background:#FF0000}
+  .fc-sa{background:#1B7A3D}
+  .fc-sa::after{content:'';position:absolute;left:14%;right:14%;top:54%;height:2px;background:#fff;border-radius:2px}
+  .fc-gb{background:#012169 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Crect width='60' height='60' fill='%23012169'/%3E%3Cpath d='M0 0 60 60M60 0 0 60' stroke='%23fff' stroke-width='11'/%3E%3Cpath d='M0 0 60 60M60 0 0 60' stroke='%23C8102E' stroke-width='4.5'/%3E%3Cpath d='M30 0V60M0 30H60' stroke='%23fff' stroke-width='19'/%3E%3Cpath d='M30 0V60M0 30H60' stroke='%23C8102E' stroke-width='11'/%3E%3C/svg%3E") center/cover no-repeat}
+
+  /* fields */
+  .field{display:flex;flex-direction:column;gap:7px}
+  .field.hide{display:none}
+  .label{font-size:14px;font-weight:600;color:var(--ds-txt2)}
+  .inwrap{position:relative;display:flex;align-items:center}
+  .input{width:100%;height:44px;border:1px solid var(--ds-hair);background:#FFFFFF;border-radius:8px;
+    padding:0 14px;font:inherit;font-size:15px;color:var(--ds-txt);outline:none;transition:border-color .15s,box-shadow .15s}
+  .input::placeholder{color:var(--ds-txt3)}
+  .input:focus{border-color:var(--magenta);box-shadow:0 0 0 4px color-mix(in srgb,var(--magenta) 20%,transparent)}
+  .input.has-trail{padding-right:46px}
+  .trail{position:absolute;right:10px;display:flex;align-items:center}
+  .eye{width:26px;height:26px;border:none;background:none;color:var(--ds-txt3);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0;border-radius:7px;transition:color .15s,background .15s}
+  .eye:hover{color:var(--ds-txt2);background:var(--ds-raised)}
+  .eye svg{width:19px;height:19px;stroke:currentColor;stroke-width:1.8;fill:none}
+
+  /* remember / forgot */
+  .row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+  .ckwrap{display:inline-flex;align-items:center;gap:9px;cursor:pointer;user-select:none}
+  .ck{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--ds-hair);flex:none;display:inline-flex;align-items:center;justify-content:center;transition:background .12s,border-color .12s}
+  .ck svg{width:12px;height:12px;stroke:#fff;stroke-width:3;fill:none;opacity:0}
+  .ck.on{background:var(--magenta);border-color:var(--magenta)}
+  .ck.on svg{opacity:1}
+  .ckwrap span{font-size:14px;color:var(--ds-txt2)}
+  .link{font-size:14px;font-weight:600;color:var(--magenta);background:none;border:none;cursor:pointer;font-family:inherit;padding:0}
+  .link:hover{text-decoration:underline}
+
+  /* buttons */
+  .btns{display:flex;flex-direction:column;gap:12px;margin-top:2px}
+  .btn{width:100%;height:44px;border-radius:8px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;
+    display:inline-flex;align-items:center;justify-content:center;gap:10px;border:1px solid transparent;transition:filter .12s,background .12s,border-color .12s}
+  .btn.primary{background:var(--magenta);color:#fff;border-color:var(--magenta)}
+  .btn.primary:hover{filter:brightness(.93)}
+  .btn.social{background:#FFFFFF;color:var(--ds-txt);border-color:var(--ds-hair)}
+  .btn.social:hover{background:var(--ds-raised)}
+  .gi{width:18px;height:18px;flex:none}
+
+  .or{display:flex;align-items:center;gap:14px;color:var(--ds-txt3);font-size:12.5px;letter-spacing:.06em}
+  .or::before,.or::after{content:"";flex:1;height:1px;background:var(--ds-hair2)}
+
+  .foot{font-size:14px;color:var(--ds-txt2);text-align:center;margin-top:2px}
+
+  /* ── brand panel (right) — the silk ribbon, like the hero ── */
+  .panel{position:relative;overflow:hidden;background:#FFFFFF;border-left:1px solid var(--sand);
+    display:flex;flex-direction:column;justify-content:space-between;padding:40px}
+  .panel .ribbon{position:absolute;pointer-events:none;user-select:none;top:-8%;right:-30%;width:min(1100px,150%);opacity:.95}
+  .panel .ribbon-low{top:auto;bottom:-16%;left:-26%;right:auto;width:min(820px,120%);opacity:.7;transform:scaleX(-1) rotate(8deg)}
+  .panel-brand{position:relative;z-index:1;font-size:19px;font-weight:800;letter-spacing:-.02em;color:var(--ink)}
+  .panel-brand .go{color:var(--magenta)}
+
+  .qcard{position:relative;z-index:1;background:rgba(255,255,255,.82);backdrop-filter:blur(10px);
+    border:1px solid var(--sand);border-radius:var(--r-card);padding:30px;max-width:440px;box-shadow:0 18px 50px rgba(24,24,23,.10)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+  .chip{font-family:var(--bn);font-size:13.5px;font-weight:600;color:var(--ink);background:#FFFFFF;
+    border:1px solid var(--sand);border-radius:var(--r-pill);padding:6px 13px}
+  .chip .arr{color:var(--magenta);margin:0 6px}
+  .qcard .quote{font-size:clamp(21px,2.3vw,26px);font-weight:600;letter-spacing:-.02em;line-height:1.32;color:var(--ink)}
+  .qcard .quote .em{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--magenta);font-size:1.06em}
+  .stars{color:#E0A92B;font-size:14px;letter-spacing:2px;margin-top:18px;display:block}
+  .qfoot{display:flex;align-items:center;gap:13px;margin-top:14px}
+  .avatar{width:46px;height:46px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;
+    font-weight:700;color:#fff;background:linear-gradient(135deg,var(--aqua),var(--magenta))}
+  .qauthor b{display:block;font-size:15px;color:var(--ink);font-weight:600}
+  .qauthor span{font-size:13px;color:var(--stone)}
+  .panel-meta{position:relative;z-index:1;font-size:13px;color:var(--stone);background:rgba(255,255,255,.7);
+    border:1px solid var(--sand);border-radius:var(--r-pill);padding:7px 15px;align-self:flex-start}
+
+  @media (max-width:860px){
+    .auth{grid-template-columns:1fr}
+    .panel{display:none}
+    .formcol{padding:24px clamp(20px,6vw,40px)}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .btn,.input,.eye{transition:none}
+  }
+</style>
+</head>
+<body>
+<main class="auth">
+
+  <!-- ─── Form column ─── -->
+  <section class="formcol">
+    <div class="topbar">
+      <a class="logo" href="tungo-homepage.html" aria-label="Tungo home">TUN<span class="go">GO</span></a>
+      <a class="back" href="tungo-homepage.html">← Back to home</a>
+    </div>
+
+    <div class="formwrap">
+      <form class="form" id="authForm" autocomplete="on" novalidate>
+        <span class="eyebrow">Nine languages · One calm app</span>
+        <div class="head">
+          <h1 id="headTitle">Welcome <span class="em">back</span></h1>
+          <p id="headSub">Log in to keep your streak going.</p>
+        </div>
+
+        <!-- login method: email or mobile -->
+        <div class="method" id="methodSeg" role="tablist" aria-label="Log in with">
+          <button type="button" class="on" data-method="email" role="tab" aria-selected="true">Email</button>
+          <button type="button" data-method="mobile" role="tab" aria-selected="false">Mobile</button>
+        </div>
+
+        <div class="field hide" id="nameField">
+          <label class="label" for="name">Name</label>
+          <div class="inwrap">
+            <input class="input" id="name" name="name" type="text" placeholder="Your name" autocomplete="name">
+          </div>
+        </div>
+
+        <div class="field" id="emailField">
+          <label class="label" for="email">Email</label>
+          <div class="inwrap">
+            <input class="input" id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email">
+          </div>
+        </div>
+
+        <div class="field hide" id="mobileField">
+          <label class="label" for="phone">Mobile number</label>
+          <div class="phonegrp">
+            <div class="ccdd" id="ccdd">
+              <button type="button" class="cctrigger" id="ccTrigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Country code">
+                <span class="fc fc-bd" id="ccFlag"></span>
+                <span id="ccDial">+880</span>
+                <span class="ccchev">▾</span>
+              </button>
+              <div class="ccmenu" id="ccMenu" role="listbox" aria-label="Country code">
+                <button type="button" data-dial="+880" data-fc="fc-bd"><span class="fc fc-bd"></span><span class="ccname">Bangladesh</span><span class="ccd">+880</span></button>
+                <button type="button" data-dial="+91" data-fc="fc-in"><span class="fc fc-in"></span><span class="ccname">India</span><span class="ccd">+91</span></button>
+                <button type="button" data-dial="+92" data-fc="fc-pk"><span class="fc fc-pk"></span><span class="ccname">Pakistan</span><span class="ccd">+92</span></button>
+                <button type="button" data-dial="+44" data-fc="fc-gb"><span class="fc fc-gb"></span><span class="ccname">United Kingdom</span><span class="ccd">+44</span></button>
+                <button type="button" data-dial="+1" data-fc="fc-us"><span class="fc fc-us"></span><span class="ccname">United States</span><span class="ccd">+1</span></button>
+                <button type="button" data-dial="+971" data-fc="fc-ae"><span class="fc fc-ae"></span><span class="ccname">United Arab Emirates</span><span class="ccd">+971</span></button>
+                <button type="button" data-dial="+966" data-fc="fc-sa"><span class="fc fc-sa"></span><span class="ccname">Saudi Arabia</span><span class="ccd">+966</span></button>
+              </div>
+            </div>
+            <input class="input phone-input" id="phone" name="phone" type="tel" placeholder="1XXX-XXXXXX" autocomplete="tel">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label" for="password">Password</label>
+          <div class="inwrap">
+            <input class="input has-trail" id="password" name="password" type="password" placeholder="Enter your password" autocomplete="current-password" required>
+            <span class="trail">
+              <button class="eye" type="button" aria-label="Show password" data-eye>
+                <svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </span>
+          </div>
+        </div>
+
+        <div class="row" id="rememberRow">
+          <label class="ckwrap">
+            <span class="ck" data-ck role="checkbox" aria-checked="false" tabindex="0">
+              <svg viewBox="0 0 24 24"><path d="m5 12 5 5L20 7"/></svg>
+            </span>
+            <span>Remember for 30 days</span>
+          </label>
+          <a class="link" href="tungo-forgot.html">Forgot password</a>
+        </div>
+
+        <div class="btns">
+          <button class="btn primary" type="submit" id="submitBtn">Sign in</button>
+          <button class="btn social" type="button">
+            <svg class="gi" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.84 14.1a6.6 6.6 0 0 1 0-4.2V7.06H2.18a11 11 0 0 0 0 9.88l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38z"/></svg>
+            <span id="googleLabel">Sign in with Google</span>
+          </button>
+        </div>
+
+        <p class="foot" id="footPrompt">Don’t have an account? <button class="link" type="button" data-switch="signup">Sign up</button></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ─── Brand panel: the homepage silk ribbon ─── -->
+  <aside class="panel">
+    <!-- silk ribbon — brand aqua → indigo → magenta (from the hero) -->
+    <svg class="ribbon" viewBox="0 0 1200 760" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="silkA" x1="0" y1="380" x2="1200" y2="300" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#6DD6DA" stop-opacity=".0"/><stop offset=".22" stop-color="#6DD6DA" stop-opacity=".75"/>
+          <stop offset=".52" stop-color="#5E7BE8" stop-opacity=".85"/><stop offset=".8" stop-color="#FF1E9A" stop-opacity=".8"/>
+          <stop offset="1" stop-color="#FF1E9A" stop-opacity=".25"/>
+        </linearGradient>
+        <linearGradient id="silkB" x1="0" y1="460" x2="1200" y2="360" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#6DD6DA" stop-opacity="0"/><stop offset=".3" stop-color="#9BE4E7" stop-opacity=".7"/>
+          <stop offset=".62" stop-color="#8FA3E8" stop-opacity=".75"/><stop offset="1" stop-color="#FF8AC8" stop-opacity=".55"/>
+        </linearGradient>
+        <linearGradient id="silkC" x1="100" y1="520" x2="1200" y2="420" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".4" stop-color="#6DD6DA" stop-opacity=".5"/>
+          <stop offset=".75" stop-color="#D58CF0" stop-opacity=".55"/><stop offset="1" stop-color="#FF1E9A" stop-opacity=".4"/>
+        </linearGradient>
+        <filter id="soft" x="-20%" y="-40%" width="140%" height="180%"><feGaussianBlur stdDeviation="14"/></filter>
+        <filter id="softer" x="-20%" y="-40%" width="140%" height="180%"><feGaussianBlur stdDeviation="26"/></filter>
+      </defs>
+      <path filter="url(#softer)" fill="url(#silkB)" opacity=".8" d="M-40 470 C 200 560, 380 300, 620 330 C 860 360, 940 560, 1240 430 L 1240 560 C 980 690, 820 480, 600 470 C 380 460, 200 660, -40 580 Z"/>
+      <path filter="url(#soft)" fill="url(#silkA)" d="M-60 420 C 180 500, 400 250, 640 280 C 880 310, 980 520, 1260 380 L 1260 470 C 1000 610, 840 400, 620 395 C 400 390, 200 600, -60 510 Z"/>
+      <path filter="url(#soft)" fill="url(#silkC)" opacity=".9" d="M40 540 C 260 600, 460 380, 700 410 C 940 440, 1020 600, 1260 500 L 1260 560 C 1040 660, 880 520, 680 515 C 480 510, 300 680, 40 615 Z"/>
+      <path filter="url(#softer)" fill="url(#silkA)" opacity=".35" d="M-60 340 C 200 420, 420 190, 660 220 C 900 250, 1000 440, 1260 310 L 1260 380 C 1010 510, 850 320, 630 318 C 410 316, 210 520, -60 430 Z"/>
+    </svg>
+
+    <div class="panel-brand">TUN<span class="go">GO</span></div>
+
+    <div class="qcard">
+      <div class="chips">
+        <span class="chip">English <span class="arr">→</span> বাংলা</span>
+        <span class="chip">हिंदी <span class="arr">→</span> 中文</span>
+      </div>
+      <p class="quote">Grammar finally <span class="em">clicked</span> when it was explained in my own language — not translated, <span class="em">understood</span>.</p>
+      <span class="stars">★★★★★</span>
+      <div class="qfoot">
+        <span class="avatar">RA</span>
+        <div class="qauthor">
+          <b>Rafiq Ahmed</b>
+          <span>Learning Spanish · Dhaka</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-meta">9 languages · explained in 3 mother tongues</div>
+  </aside>
+
+</main>
+
+<script>
+  // password reveal
+  document.querySelectorAll('[data-eye]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var input = btn.closest('.inwrap').querySelector('input');
+      var show = input.type === 'password';
+      input.type = show ? 'text' : 'password';
+      btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+    });
+  });
+
+  // remember-me checkbox
+  var ck = document.querySelector('[data-ck]');
+  function toggleCk(){
+    var on = ck.classList.toggle('on');
+    ck.setAttribute('aria-checked', on ? 'true' : 'false');
+  }
+  ck.addEventListener('click', toggleCk);
+  ck.addEventListener('keydown', function(e){
+    if(e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); toggleCk(); }
+  });
+
+  // login / signup mode
+  var segBtns   = document.querySelectorAll('.seg button');
+  var nameField = document.getElementById('nameField');
+  var rememberRow = document.getElementById('rememberRow');
+  var headTitle = document.getElementById('headTitle');
+  var headSub   = document.getElementById('headSub');
+  var submitBtn = document.getElementById('submitBtn');
+  var googleLabel = document.getElementById('googleLabel');
+  var footPrompt  = document.getElementById('footPrompt');
+  var password    = document.getElementById('password');
+
+  function setMode(mode){
+    var signup = mode === 'signup';
+    segBtns.forEach(function(b){
+      var on = b.dataset.mode === mode;
+      b.classList.toggle('on', on);
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    nameField.classList.toggle('hide', !signup);
+    rememberRow.style.display = signup ? 'none' : 'flex';
+    headTitle.innerHTML = signup
+      ? 'Start <span class="em">learning</span>'
+      : 'Welcome <span class="em">back</span>';
+    headSub.textContent = signup
+      ? 'Create your free account — no card needed.'
+      : 'Log in to keep your streak going.';
+    submitBtn.textContent = signup ? 'Create account' : 'Sign in';
+    googleLabel.textContent = signup ? 'Sign up with Google' : 'Sign in with Google';
+    password.setAttribute('autocomplete', signup ? 'new-password' : 'current-password');
+    footPrompt.innerHTML = signup
+      ? 'Already have an account? <button class="link" type="button" data-switch="login">Log in</button>'
+      : 'Don’t have an account? <button class="link" type="button" data-switch="signup">Sign up</button>';
+  }
+
+  segBtns.forEach(function(b){
+    b.addEventListener('click', function(){ setMode(b.dataset.mode); });
+  });
+  document.addEventListener('click', function(e){
+    var t = e.target.closest('[data-switch]');
+    if(t){ setMode(t.dataset.switch); }
+  });
+
+  // email / mobile method toggle
+  var methodBtns = document.querySelectorAll('#methodSeg button');
+  var emailField = document.getElementById('emailField');
+  var mobileField = document.getElementById('mobileField');
+  function setMethod(m){
+    methodBtns.forEach(function(b){
+      var on = b.dataset.method === m;
+      b.classList.toggle('on', on);
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    emailField.classList.toggle('hide', m !== 'email');
+    mobileField.classList.toggle('hide', m !== 'mobile');
+  }
+  methodBtns.forEach(function(b){
+    b.addEventListener('click', function(){ setMethod(b.dataset.method); });
+  });
+
+  // country-code dropdown
+  var ccdd = document.getElementById('ccdd');
+  var ccTrigger = document.getElementById('ccTrigger');
+  var ccMenu = document.getElementById('ccMenu');
+  var ccFlag = document.getElementById('ccFlag');
+  var ccDial = document.getElementById('ccDial');
+  ccTrigger.addEventListener('click', function(e){
+    e.stopPropagation();
+    var open = ccdd.classList.toggle('open');
+    ccTrigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  ccMenu.querySelectorAll('button').forEach(function(b){
+    b.addEventListener('click', function(){
+      ccFlag.className = 'fc ' + b.dataset.fc;
+      ccDial.textContent = b.dataset.dial;
+      ccdd.classList.remove('open');
+      ccTrigger.setAttribute('aria-expanded', 'false');
+      document.getElementById('phone').focus();
+    });
+  });
+  document.addEventListener('click', function(e){
+    if(!ccdd.contains(e.target)){ ccdd.classList.remove('open'); ccTrigger.setAttribute('aria-expanded','false'); }
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape'){ ccdd.classList.remove('open'); ccTrigger.setAttribute('aria-expanded','false'); }
+  });
+
+  // demo submit — wire to your auth backend
+  document.getElementById('authForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    submitBtn.disabled = true;
+    var label = submitBtn.textContent.trim();
+    submitBtn.textContent = 'One moment…';
+    setTimeout(function(){
+      window.location.href = 'tungo-app.html';
+    }, 900);
+  });
+</script>
+</body>
+</html>
