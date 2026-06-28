@@ -61,11 +61,27 @@
   .coursebtn .fc{width:24px;height:24px}
   .coursebtn .chev{font-size:10px;color:var(--stone)}
   .cdd{position:relative;margin-right:auto}
-  .cmenu{position:absolute;top:calc(100% + 8px);left:0;min-width:220px;background:#fff;border:1px solid var(--sand);border-radius:16px;padding:7px;box-shadow:var(--shadow);display:none;z-index:40}
+  .cmenu{position:absolute;top:calc(100% + 8px);left:0;width:300px;max-height:min(560px,80vh);overflow-y:auto;background:#fff;border:1px solid var(--sand);border-radius:18px;padding:14px;box-shadow:var(--shadow);display:none;z-index:40}
   .cdd.open .cmenu{display:block}
-  .cmenu button{display:flex;align-items:center;gap:11px;width:100%;background:none;border:none;border-radius:11px;padding:9px 11px;font:inherit;font-size:14px;font-weight:600;color:var(--ink);cursor:pointer;text-align:left;transition:background .12s}
-  .cmenu button:hover{background:var(--raised)}
-  .cmenu .fc{width:26px;height:26px}.cmenu .nm{flex:1}
+  .cmenu-head{display:flex;align-items:center;justify-content:space-between;padding:6px 6px 8px;margin-top:6px}
+  .cmenu-head:first-child{margin-top:0}
+  .cmenu-title{font-size:17px;font-weight:800;letter-spacing:-.01em;color:var(--ink)}
+  .cmenu-edit{background:none;border:none;font:inherit;font-size:14px;font-weight:700;color:var(--indigo);cursor:pointer;padding:2px 4px;border-radius:7px}
+  .cmenu-edit:hover{text-decoration:underline}
+  .cmenu-list{display:flex;flex-direction:column;gap:2px}
+  .cmenu-item{display:flex;align-items:center;gap:12px;width:100%;background:none;border:none;border-radius:12px;padding:9px 10px;font:inherit;font-size:15px;font-weight:600;color:var(--ink);cursor:pointer;text-align:left;transition:background .12s}
+  .cmenu-item:hover{background:var(--raised)}
+  .cmenu-item .fc{width:28px;height:28px}
+  .cmenu-item .nm{flex:1}
+  .cmenu-item.on{background:color-mix(in srgb,var(--magenta) 7%,#fff)}
+  .cmenu-item .ck{width:19px;height:19px;stroke:var(--magenta);stroke-width:3;fill:none;opacity:0;flex:none}
+  .cmenu-item.on .ck{opacity:1}
+  .cmenu-item .addic{width:22px;height:22px;border-radius:999px;background:var(--raised);border:1px solid var(--sand);color:var(--stone);font-size:16px;font-weight:700;line-height:1;display:flex;align-items:center;justify-content:center;flex:none}
+  .cmenu-item.add:hover .addic{background:var(--magenta);border-color:var(--magenta);color:#fff}
+  .cmenu-item .rmv{display:none;width:22px;height:22px;border-radius:999px;background:#FCE7E6;color:var(--ruby);font-size:18px;font-weight:700;line-height:1;align-items:center;justify-content:center;flex:none;cursor:pointer;transition:filter .12s}
+  .cmenu-item .rmv:hover{filter:brightness(.94)}
+  .cmenu.editing #learningList .cmenu-item .ck{display:none}
+  .cmenu.editing #learningList .cmenu-item .rmv{display:flex}
 
   .content{padding:26px;flex:1}
   .view{max-width:680px;margin:0 auto;animation:fade .25s ease}
@@ -81,6 +97,11 @@
   .fc-cn{background:#DE2910}.fc-cn::after{content:'★';position:absolute;top:0;left:3px;color:#FFDE00;font-size:12px;line-height:1.1}
   .fc-fr{background:linear-gradient(90deg,#0055A4 0 33.3%,#fff 33.3% 66.6%,#EF4135 66.6%)}
   .fc-gb{background:#012169 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Crect width='60' height='60' fill='%23012169'/%3E%3Cpath d='M0 0 60 60M60 0 0 60' stroke='%23fff' stroke-width='11'/%3E%3Cpath d='M0 0 60 60M60 0 0 60' stroke='%23C8102E' stroke-width='4.5'/%3E%3Cpath d='M30 0V60M0 30H60' stroke='%23fff' stroke-width='19'/%3E%3Cpath d='M30 0V60M0 30H60' stroke='%23C8102E' stroke-width='11'/%3E%3C/svg%3E") center/cover no-repeat}
+  .fc-de{background:linear-gradient(180deg,#000 0 33.3%,#DD0000 33.3% 66.6%,#FFCE00 66.6%)}
+  .fc-jp{background:#fff}.fc-jp::after{content:'';position:absolute;top:50%;left:50%;width:46%;height:46%;transform:translate(-50%,-50%);border-radius:50%;background:#BC002D}
+  .fc-it{background:linear-gradient(90deg,#008C45 0 33.3%,#fff 33.3% 66.6%,#CD212A 66.6%)}
+  .fc-nl{background:linear-gradient(180deg,#AE1C28 0 33.3%,#fff 33.3% 66.6%,#21468B 66.6%)}
+  .fc-ru{background:linear-gradient(180deg,#fff 0 33.3%,#0039A6 33.3% 66.6%,#D52B1E 66.6%)}
 
   /* ─── buttons ─── */
   .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;font-size:15px;padding:12px 20px;border-radius:14px;border:1px solid transparent;cursor:pointer;transition:filter .12s,background .12s,transform .08s,border-color .12s}
@@ -97,19 +118,29 @@
   .card{background:var(--card);border:1px solid var(--sand);border-radius:var(--r);box-shadow:var(--shadow-sm)}
 
   /* ═══ LEARN — skill path ═══ */
-  .unitbar{display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--magenta);color:#fff;border-radius:var(--r);padding:16px 20px;box-shadow:0 4px 0 var(--magenta-deep);position:sticky;top:74px;z-index:20}
+  .unitbar{display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--uc,var(--magenta));color:#fff;border-radius:var(--r);padding:16px 20px;box-shadow:0 4px 0 var(--ucd,var(--magenta-deep));position:sticky;top:74px;z-index:20;transition:background .25s,box-shadow .25s}
   .unitbar .ulabel{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;opacity:.85}
   .unitbar h2{font-size:19px;font-weight:800;letter-spacing:-.01em;margin-top:2px}
-  .guidebook{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);color:#fff;font-weight:700;font-size:13px;padding:9px 14px;border-radius:12px;cursor:pointer;flex:none}
-  .guidebook:hover{background:rgba(255,255,255,.26)}
-  .guidebook svg{width:17px;height:17px;stroke:currentColor;stroke-width:2;fill:none}
-  .opensec{background:none;border:none;text-align:left;cursor:pointer;color:#fff;padding:0;display:block}
   .ub-left{display:flex;align-items:center;gap:13px;min-width:0}
+  .ub-titles{min-width:0}
   .unitback{width:38px;height:38px;flex:none;border-radius:50%;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .14s}
   .unitback:hover{background:rgba(255,255,255,.3)}
   .unitback svg{width:20px;height:20px;stroke:currentColor;stroke-width:2.4;fill:none}
-  .opensec .utitle{font-size:19px;font-weight:800;letter-spacing:-.01em;display:block;margin-top:2px}
-  .opensec:hover .utitle{text-decoration:underline}
+  .ulabel-btn{background:none;border:none;color:#fff;cursor:pointer;padding:0;font:inherit;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;opacity:.92;display:block}
+  .ulabel-btn:hover{opacity:1}
+  .utitle-btn{background:none;border:none;color:#fff;cursor:pointer;padding:0;text-align:left;display:block}
+  .utitle-btn .utitle{font-size:19px;font-weight:800;letter-spacing:-.01em;display:block;margin-top:2px}
+  .utitle-btn:hover .utitle{text-decoration:underline}
+  .unitmenu{position:absolute;top:calc(100% + 8px);left:0;width:280px;max-height:62vh;overflow-y:auto;background:#fff;border:1px solid var(--sand);border-radius:16px;padding:8px;box-shadow:var(--shadow);display:none;z-index:30}
+  .unitmenu.open{display:block}
+  .umrow{display:flex;align-items:center;gap:12px;width:100%;background:none;border:none;border-radius:12px;padding:10px 11px;font:inherit;text-align:left;cursor:pointer;color:var(--ink);transition:background .12s}
+  .umrow:hover{background:var(--raised)}
+  .umrow.on{background:color-mix(in srgb,var(--magenta) 8%,#fff)}
+  .umnum{width:28px;height:28px;flex:none;border-radius:50%;background:var(--magenta);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center}
+  .umrow.lock .umnum{background:var(--sand-2);color:var(--stone)}
+  .umtext{min-width:0}
+  .umtext b{display:block;font-size:14.5px;font-weight:800;letter-spacing:-.01em}
+  .umtext span{display:block;font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--stone)}
 
   /* sections overview */
   .back{display:inline-flex;align-items:center;gap:5px;background:none;border:none;font:inherit;font-weight:700;font-size:14px;color:var(--muted);cursor:pointer;margin-bottom:10px;padding:6px 4px;border-radius:8px}
@@ -147,24 +178,28 @@
   .locktip .lk{display:inline-block;margin-top:8px;font-size:10.5px;font-weight:800;letter-spacing:.06em;background:rgba(255,255,255,.15);padding:3px 9px;border-radius:99px}
 
   .path{position:relative;padding:34px 0 10px;display:flex;flex-direction:column;align-items:center;gap:22px}
-  .node{position:relative;display:flex;flex-direction:column;align-items:center}
-  /* winding offsets */
-  .node:nth-child(1){margin-left:0}
-  .node:nth-child(2){margin-left:96px}
-  .node:nth-child(3){margin-left:150px}
-  .node:nth-child(4){margin-left:96px}
-  .node:nth-child(5){margin-left:0}
-  .node:nth-child(6){margin-left:-96px}
-  .node:nth-child(7){margin-left:-150px}
-  .node:nth-child(8){margin-left:-96px}
-  .node:nth-child(9){margin-left:0}
+  .node{position:relative;display:flex;flex-direction:column;align-items:center;transition:transform .15s}
+  /* horizontal winding offset is set inline per node in JS (works for any node count) */
+  .unit-block{padding-bottom:8px}
+  .unit-block.locked{opacity:.96}
+  .unit-sep{display:flex;align-items:center;gap:14px;margin:26px 6px 2px;color:var(--stone)}
+  .unit-sep::before,.unit-sep::after{content:"";flex:1;height:2px;border-radius:2px;background:var(--sand)}
+  .unit-sep span{font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;text-align:center;max-width:62%}
+  .jumpnode{margin-top:44px;margin-bottom:4px}
+  .jumplabel{position:absolute;bottom:calc(100% + 14px);left:50%;transform:translateX(-50%);background:#fff;border:2px solid var(--uc,var(--magenta));color:var(--ink);font-weight:800;font-size:12px;letter-spacing:.04em;padding:6px 14px;border-radius:11px;box-shadow:var(--shadow);white-space:nowrap;z-index:6;animation:startbob 1.15s ease-in-out infinite}
+  .jumplabel::after{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--uc,var(--magenta))}
+  .nbtn.jump svg{width:30px;height:30px}
   .nbtn{width:74px;height:68px;border-radius:50%;border:none;cursor:pointer;position:relative;display:flex;align-items:center;justify-content:center;transition:transform .1s}
   .nbtn:active{transform:translateY(3px)}
   .nbtn svg{width:32px;height:32px;stroke:#fff;stroke-width:2;fill:none}
-  .nbtn.done{background:var(--mint);box-shadow:0 6px 0 var(--mint-deep)}
-  .nbtn.done svg{stroke:var(--ink)}
-  .nbtn.active{background:var(--mint);box-shadow:0 6px 0 var(--mint-deep)}
-  .nbtn.active svg{stroke:var(--ink)}
+  .nbtn.done{background:var(--uc,var(--mint));box-shadow:0 6px 0 var(--ucd,var(--mint-deep))}
+  .nbtn.done svg{stroke:var(--ufg,var(--ink))}
+  .nbtn.active{background:var(--uc,var(--mint));box-shadow:0 6px 0 var(--ucd,var(--mint-deep))}
+  .nbtn.active svg{stroke:var(--ufg,var(--ink))}
+  .nbtn.ureview{background:linear-gradient(135deg,#FFD45A,#F0A92B);box-shadow:0 6px 0 #C9881C}
+  .nbtn.ureview svg{stroke:#5A3D06}
+  .nbtn.jump{background:var(--uc,var(--magenta));box-shadow:0 6px 0 var(--ucd,var(--magenta-deep))}
+  .nbtn.jump svg{stroke:var(--ufg,#fff)}
   .nbtn.story{background:var(--indigo);box-shadow:0 6px 0 #3F58C0}
   .nbtn.chest{background:var(--amber);box-shadow:0 6px 0 #C9881C}
   .nbtn.review{background:var(--aqua);box-shadow:0 6px 0 #45A8AD}.nbtn.review svg{stroke:var(--ink)}
@@ -172,8 +207,11 @@
   .nbtn.lock{background:var(--sand-2);box-shadow:0 6px 0 #C2BCAE;cursor:default}
   .nbtn.lock svg{stroke:var(--stone)}
   .ntag{margin-top:11px;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--stone)}
-  .start-pop{position:absolute;bottom:calc(100% + 12px);left:50%;transform:translateX(-50%);background:#fff;border:2px solid var(--mint);color:var(--ink);font-weight:800;font-size:13px;padding:7px 16px;border-radius:12px;box-shadow:var(--shadow);white-space:nowrap}
-  .start-pop::after{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);border:7px solid transparent;border-top-color:var(--mint)}
+  .start-pop{position:absolute;bottom:calc(100% + 14px);left:50%;transform:translateX(-50%);background:#fff;border:2px solid var(--uc,var(--mint));color:var(--ink);font-weight:800;font-size:13px;padding:7px 16px;border-radius:12px;box-shadow:var(--shadow);white-space:nowrap;z-index:6;animation:startbob 1.15s ease-in-out infinite}
+  .start-pop::after{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);border:7px solid transparent;border-top-color:var(--uc,var(--mint))}
+  @keyframes startbob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-6px)}}
+  @media (prefers-reduced-motion:reduce){.start-pop,.jumplabel{animation:none}}
+  .node.has-start{margin-top:46px}
 
   /* node popup */
   .npop{position:absolute;bottom:calc(100% + 16px);left:50%;transform:translateX(-50%) scale(.96);width:230px;background:var(--magenta);border-radius:16px;padding:16px;box-shadow:0 12px 36px rgba(214,21,127,.4);color:#fff;opacity:0;pointer-events:none;transition:opacity .15s,transform .15s;z-index:25}
@@ -300,6 +338,8 @@
   .prompt{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--sand);border-radius:16px;padding:16px;margin-bottom:20px}
   .prompt .spk{width:46px;height:46px;border-radius:12px;background:var(--indigo);display:flex;align-items:center;justify-content:center;flex:none;cursor:pointer}
   .prompt .spk svg{width:24px;height:24px;stroke:#fff;stroke-width:2;fill:none}
+  .spk.playing,.audiobtn.playing{animation:spkpulse .5s ease-in-out infinite alternate}
+  @keyframes spkpulse{to{transform:scale(1.09)}}
   .prompt .txt{font-size:17px;font-weight:600}
   .answer{min-height:58px;border-bottom:2px solid var(--sand);display:flex;flex-wrap:wrap;gap:8px;padding:8px 0;margin-bottom:18px}
   .bank{display:flex;flex-wrap:wrap;gap:10px}
@@ -319,6 +359,150 @@
   .sumstat{background:#fff;border:1px solid var(--sand);border-radius:14px;padding:14px 20px;min-width:96px}
   .sumstat b{font-size:22px;font-weight:800;display:block}
   .sumstat span{font-size:12px;color:var(--stone);font-weight:700}
+  /* exercise UI */
+  .qhead{font-size:13px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--stone);margin-bottom:16px}
+  .sentence{font-size:20px;font-weight:600;line-height:1.75;margin-bottom:24px;color:var(--ink)}
+  .sentence .blk{display:inline-block;min-width:70px;border-bottom:3px solid var(--stone);text-align:center;font-weight:800;color:var(--magenta-deep);padding:0 8px;cursor:pointer}
+  .opts{display:flex;flex-direction:column;gap:11px}
+  .opt{display:flex;align-items:center;gap:13px;width:100%;background:#fff;border:2px solid var(--sand);border-bottom-width:4px;border-radius:14px;padding:14px 16px;font:inherit;font-size:16px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left;transition:border-color .12s,background .12s,transform .08s}
+  .opt:active{transform:translateY(1px)}
+  .opt .num{width:26px;height:26px;border-radius:8px;border:2px solid var(--sand);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--stone);flex:none}
+  .opt.sel{border-color:var(--indigo);background:color-mix(in srgb,var(--indigo) 9%,#fff)}
+  .opt.sel .num{border-color:var(--indigo);color:var(--indigo)}
+  .opt.correct{border-color:var(--mint-deep);background:color-mix(in srgb,var(--mint) 22%,#fff)}
+  .opt.correct .num{border-color:var(--mint-deep);color:var(--mint-deep)}
+  .opt.wrong{border-color:var(--ruby);background:color-mix(in srgb,var(--ruby) 12%,#fff)}
+  .opt[disabled]{cursor:default}
+  @keyframes optpop{0%{transform:scale(1)}42%{transform:scale(1.035)}100%{transform:scale(1)}}
+  .opt.pop{animation:optpop .22s ease}
+  /* clickable words (tap to hear) */
+  .cw{cursor:pointer;border-bottom:2px dotted var(--aqua);transition:color .1s,background .1s;border-radius:3px}
+  .cw:hover{color:var(--indigo)}
+  .cw.playing{color:var(--indigo);background:color-mix(in srgb,var(--aqua) 30%,#fff)}
+  /* complete the chat */
+  .chat{display:flex;flex-direction:column;gap:16px;margin-bottom:26px}
+  .chat-row{display:flex;align-items:flex-end;gap:10px}
+  .chat-row.right{flex-direction:row-reverse}
+  .avatar{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;flex:none;background:var(--sand);box-shadow:inset 0 0 0 2px rgba(0,0,0,.04)}
+  .avatar.avA{background:color-mix(in srgb,var(--magenta) 20%,#fff)}
+  .avatar.avB{background:color-mix(in srgb,var(--indigo) 20%,#fff)}
+  .bubble{position:relative;background:#fff;border:2px solid var(--sand);border-radius:18px;padding:12px 16px;font-size:17px;font-weight:600;line-height:1.5;max-width:74%;display:flex;align-items:center;gap:10px}
+  .bubble-right{background:color-mix(in srgb,var(--indigo) 9%,#fff);border-color:color-mix(in srgb,var(--indigo) 18%,#fff)}
+  .bubble-left::after{content:"";position:absolute;left:-8px;bottom:14px;width:13px;height:13px;background:inherit;border-left:2px solid var(--sand);border-bottom:2px solid var(--sand);transform:rotate(45deg)}
+  .bubble-right::after{content:"";position:absolute;right:-8px;bottom:14px;width:13px;height:13px;background:inherit;border-right:2px solid color-mix(in srgb,var(--indigo) 18%,#fff);border-top:2px solid color-mix(in srgb,var(--indigo) 18%,#fff);transform:rotate(45deg)}
+  .reply-blank{min-width:120px;min-height:26px;justify-content:center}
+  .reply-blank .blk{min-width:90px}
+  .spk-sm{width:32px;height:32px;border-radius:9px;background:var(--indigo);display:inline-flex;align-items:center;justify-content:center;flex:none;cursor:pointer;border:none}
+  .spk-sm svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2}
+  .listen-row{display:flex;gap:12px;margin-bottom:18px}
+  .audiobtn{display:inline-flex;align-items:center;gap:9px;background:var(--indigo);color:#fff;border:none;border-radius:13px;padding:14px 18px;font:inherit;font-weight:800;cursor:pointer}
+  .audiobtn.slow{background:#fff;color:var(--indigo);border:2px solid var(--indigo)}
+  .audiobtn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2}
+  .ltext{width:100%;min-height:96px;border:2px solid var(--sand);border-radius:14px;padding:14px;font:inherit;font-size:16px;resize:none;box-sizing:border-box}
+  .ltext:focus{outline:none;border-color:var(--indigo)}
+  .skipbtn{background:#fff;border:2px solid var(--sand);border-radius:12px;padding:11px 16px;font:inherit;font-weight:800;color:var(--stone);cursor:pointer;margin-top:16px}
+  .skipbtn:hover{border-color:var(--stone)}
+  .lfoot.warn{background:color-mix(in srgb,var(--amber) 20%,#fff)}.lfoot.warn .fb{color:#9A6A0C}
+  .lfoot .btn:disabled{opacity:.4;cursor:default;box-shadow:none}
+  .checkpoint{text-align:center;padding:26px 26px 8px}
+  .lmascot{width:108px;height:108px;border-radius:50%;margin:0 auto 20px;background:linear-gradient(135deg,var(--mint),var(--aqua));display:flex;align-items:center;justify-content:center;font-size:54px;box-shadow:0 10px 0 rgba(12,201,122,.25)}
+  .checkpoint h3{font-size:24px;font-weight:800;margin-bottom:8px}
+  .checkpoint p{color:var(--muted)}
+  .lsummary .lmascot{background:linear-gradient(135deg,var(--amber),var(--magenta));box-shadow:0 10px 0 rgba(214,21,127,.22)}
+  /* ── full-screen lesson ── */
+  #lessonModal{background:var(--paper);padding:0;align-items:stretch;justify-content:stretch}
+  #lessonModal .lesson{width:100%;max-width:none;height:100vh;height:100dvh;max-height:none;border-radius:0;background:var(--paper);box-shadow:none}
+  #lessonModal .lhead{width:100%;max-width:1040px;margin:0 auto;padding:22px 28px}
+  #lessonModal .lhead .x{font-size:26px}
+  #lessonModal .lhead .pbar{height:16px}
+  #lessonModal .lbody{flex:1;display:flex;flex-direction:column;justify-content:center;padding:24px 28px 48px;overflow:auto}
+  #lessonModal .lbody > *{width:100%;max-width:720px;margin-left:auto;margin-right:auto}
+  #lessonModal .lbody .qhead{font-size:15px}
+  #lessonModal .lbody .sentence{font-size:24px}
+  #lessonModal .lfoot{padding:0;display:block;border-top:1px solid var(--sand);background:var(--card)}
+  #lessonModal .lfoot.ok{background:color-mix(in srgb,var(--mint) 18%,#fff)}
+  #lessonModal .lfoot.bad{background:color-mix(in srgb,var(--ruby) 12%,#fff)}
+  #lessonModal .lfoot.warn{background:color-mix(in srgb,var(--amber) 20%,#fff)}
+  #lessonModal .lfoot-in{width:100%;max-width:1040px;margin:0 auto;padding:18px 28px;display:flex;align-items:center;gap:16px}
+  #lessonModal .lfoot-in .fb{flex:1;font-size:16px}
+  #lessonModal .lfoot-in .btn{min-width:150px}
+  #lessonModal .skipbtn{margin-top:0}
+  .skipbtn.hide{display:none}
+  @media (max-width:560px){
+    #lessonModal .lfoot-in .btn{min-width:120px}
+    #lessonModal .lbody .sentence{font-size:21px}
+    #lessonModal .lfoot-in{padding:14px 18px;gap:10px}
+    #lessonModal .lhead,#lessonModal .lbody{padding-left:18px;padding-right:18px}
+  }
+
+  /* ─── Refer & earn ─── */
+  .rf-gencard{padding:26px 22px;text-align:center;display:flex;flex-direction:column;align-items:center}
+  .rf-genic{width:54px;height:54px;border-radius:999px;background:color-mix(in srgb,var(--magenta) 14%,#fff);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+  .rf-genic svg{width:26px;height:26px;stroke:var(--magenta);stroke-width:2;fill:none}
+  .rf-gencard h4{font-size:17px;font-weight:800;color:var(--ink)}
+  .rf-gencard p{font-size:13px;color:var(--muted);margin:6px 0 16px;max-width:380px;line-height:1.55}
+  .rf-gencard .btn{min-width:180px}
+  .rf-codecard{padding:18px}
+  .rf-coderow{display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .rf-codelabel{font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--stone)}
+  .rf-code{font-size:26px;font-weight:800;letter-spacing:.14em;color:var(--ink);margin-top:4px}
+  .rf-copy{padding:10px 18px;font-size:14px}
+  .rf-linkrow{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;padding:11px 14px;background:var(--raised);border:1px solid var(--sand);border-radius:13px}
+  .rf-link{font-size:13.5px;font-weight:600;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .rf-linkrow .rf-copy{padding:8px 12px;font-size:12.5px;flex:none}
+  .rf-share{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .rf-sbtn{flex:1;min-width:120px;border:1px solid var(--sand);background:#fff;font:inherit;font-weight:700;font-size:13px;color:var(--ink);padding:10px 12px;border-radius:12px;cursor:pointer;transition:filter .12s,transform .08s}
+  .rf-sbtn:active{transform:translateY(1px)}
+  .rf-wa{background:#DCFCE7;border-color:#BBF7D0;color:#166534}
+  .rf-ms{background:#DBEAFE;border-color:#BFDBFE;color:#1E40AF}
+  .rf-fb{background:#E0E7FF;border-color:#C7D2FE;color:#3730A3}
+  .rf-x{background:#FCE7F3;border-color:#FBCFE8;color:#9D174D}
+  .rf-sbtn:hover{filter:brightness(.97)}
+
+  .rf-intro{display:flex;gap:14px;align-items:flex-start;background:linear-gradient(135deg,#FFF0F8,#FFE7F3);border:1px solid #FFD3E9;border-radius:18px;padding:16px;margin-bottom:14px}
+  .rf-introic{width:48px;height:48px;border-radius:999px;background:var(--magenta);display:flex;align-items:center;justify-content:center;flex:none}
+  .rf-introic svg{width:24px;height:24px;stroke:#fff;stroke-width:2;fill:none}
+  .rf-intro h4{font-size:14px;font-weight:800;color:var(--ink)}
+  .rf-intro p{font-size:12.5px;color:var(--muted);margin-top:3px;line-height:1.5}
+
+  .rf-steps{display:flex;flex-direction:column;gap:14px}
+  .rf-step{display:flex;gap:14px;align-items:flex-start;background:#fff;border:2px solid var(--sand);border-radius:22px;padding:18px}
+  .rf-num{width:32px;height:32px;border-radius:999px;background:var(--magenta);color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;flex:none;margin-top:2px}
+  .rf-body{flex:1;min-width:0}
+  .rf-body h4{font-size:15px;font-weight:800;color:var(--ink)}
+  .rf-body>p{font-size:13px;color:var(--muted);margin-top:5px;line-height:1.55}
+  .rf-body code{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;background:var(--raised);border:1px solid var(--sand);border-radius:6px;padding:1px 6px;color:var(--ink)}
+  .rf-call{display:flex;gap:9px;align-items:flex-start;border-radius:13px;padding:10px 12px;margin-top:11px;font-size:12.5px;line-height:1.5}
+  .rf-call svg{width:17px;height:17px;flex:none;margin-top:1px;stroke-width:2.4;fill:none}
+  .rf-call-mint{background:#EAFBF3;border:1px solid #CFF3E2;color:#0B7a4d}
+  .rf-call-mint svg{stroke:#0CC97A}
+  .rf-call-green{background:#EAFBF3;border:1px solid #BBEFD7;color:#0B7a4d}
+  .rf-call-green svg{stroke:#0CC97A}
+  .rf-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:11px}
+  .rf-pill{font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px}
+  .p-wa{background:#DCFCE7;color:#166534}
+  .p-ms{background:#DBEAFE;color:#1E40AF}
+  .p-fb{background:#E0E7FF;color:#3730A3}
+  .p-x{background:#FCE7F3;color:#9D174D}
+  .rf-tiles{display:flex;gap:9px;margin-top:12px}
+  .rf-tile{flex:1;border-radius:13px;border:1px solid;padding:10px 6px;text-align:center}
+  .rf-tile b{display:block;font-size:20px;font-weight:800;line-height:1.1}
+  .rf-tile span{font-size:11px;color:var(--stone);font-weight:600}
+  .t-mag{background:#FFF0F8;border-color:#FFD3E9}.t-mag b{color:var(--magenta)}
+  .t-green{background:#EAFBF3;border-color:#BBEFD7}.t-green b{color:#0CC97A}
+
+  .rf-faqlabel{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);margin:24px 4px 12px}
+  .rf-faq{display:flex;flex-direction:column;gap:12px}
+  .rf-q{background:#fff;border:2px solid var(--sand);border-radius:18px;padding:15px 18px}
+  .rf-q summary{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:14px;font-weight:800;color:var(--ink);cursor:pointer;list-style:none}
+  .rf-q summary::-webkit-details-marker{display:none}
+  .rf-q summary svg{width:18px;height:18px;stroke:var(--magenta);stroke-width:2.4;fill:none;flex:none;transition:transform .2s}
+  .rf-q[open] summary svg{transform:rotate(180deg)}
+  .rf-q p{font-size:12.5px;color:var(--muted);margin-top:10px;line-height:1.6}
+
+  /* tiny toast */
+  .rf-toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:13px;font-weight:700;padding:11px 18px;border-radius:12px;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:120}
+  .rf-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
   /* ─── mobile tab bar ─── */
   .tabbar{display:none}
@@ -339,13 +523,6 @@
     .topbar{padding:13px 16px}
     .stat{font-size:13px;padding:6px 10px}
     .unitbar{top:64px}
-    .node:nth-child(n){margin-left:0!important}
-    .path .node:nth-child(2){transform:translateX(70px)}
-    .path .node:nth-child(3){transform:translateX(108px)}
-    .path .node:nth-child(4){transform:translateX(70px)}
-    .path .node:nth-child(6){transform:translateX(-70px)}
-    .path .node:nth-child(7){transform:translateX(-108px)}
-    .path .node:nth-child(8){transform:translateX(-70px)}
     .statgrid,.lgrid{grid-template-columns:1fr 1fr}
     .tabbar{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:50;background:#fff;border-top:1px solid var(--sand);padding:7px 6px;justify-content:space-around;box-shadow:0 -4px 20px rgba(24,24,23,.06)}
     .tabbar button{background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--stone);font-size:10px;font-weight:700;cursor:pointer;padding:5px 8px;border-radius:10px}
@@ -365,7 +542,7 @@
     <button class="navlink" data-view="letters"><svg viewBox="0 0 24 24"><path d="M4 7V5h16v2"/><path d="M9 19h6M12 5v14"/></svg><span>Letters</span></button>
     <button class="navlink" data-view="practice"><svg viewBox="0 0 24 24"><path d="M12 20v-6M6 20v-3M18 20v-9"/><circle cx="12" cy="9" r="2"/><circle cx="6" cy="14" r="2"/><circle cx="18" cy="6" r="2"/></svg><span>Practice</span></button>
     <button class="navlink" data-view="quests"><svg viewBox="0 0 24 24"><path d="m12 3 2.5 5 5.5.8-4 3.9.9 5.5L12 21l-4.9 2.6.9-5.5-4-3.9 5.5-.8z"/></svg><span>Quests</span><span class="badge">2</span></button>
-    <button class="navlink" data-view="shop"><svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V6l-3-4zM3 6h18M16 10a4 4 0 0 1-8 0"/></svg><span>Shop</span></button>
+    <button class="navlink" data-view="shop"><svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V6l-3-4zM3 6h18M16 10a4 4 0 0 1-8 0"/></svg><span>Subscriptions</span></button>
     <button class="navlink" data-view="profile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/></svg><span>Profile</span></button>
     <div class="moreWrap" id="moreWrap">
       <button class="navlink" id="moreBtn"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg><span>More</span></button>
@@ -387,10 +564,21 @@
       <div class="cdd" id="cdd">
         <button class="coursebtn" id="courseBtn"><span class="fc fc-es" id="courseFlag"></span><span id="courseName">Spanish</span><span class="chev">▼</span></button>
         <div class="cmenu">
-          <button data-fc="fc-es" data-name="Spanish"><span class="fc fc-es"></span><span class="nm">Spanish</span></button>
-          <button data-fc="fc-fr" data-name="French"><span class="fc fc-fr"></span><span class="nm">French</span></button>
-          <button data-fc="fc-cn" data-name="Chinese"><span class="fc fc-cn"></span><span class="nm">Chinese</span></button>
-          <button data-fc="fc-gb" data-name="English"><span class="fc fc-gb"></span><span class="nm">English</span></button>
+          <div class="cmenu-head"><span class="cmenu-title">You're learning</span><button class="cmenu-edit" id="courseEdit">Edit</button></div>
+          <div class="cmenu-list" id="learningList">
+            <button class="cmenu-item on" data-fc="fc-es" data-name="Spanish"><span class="fc fc-es"></span><span class="nm">Spanish</span><svg class="ck" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></button>
+            <button class="cmenu-item" data-fc="fc-gb" data-name="English"><span class="fc fc-gb"></span><span class="nm">English</span><svg class="ck" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></button>
+          </div>
+          <div class="cmenu-head"><span class="cmenu-title">Learn another language</span></div>
+          <div class="cmenu-list" id="addList">
+            <button class="cmenu-item add" data-fc="fc-fr" data-name="French"><span class="fc fc-fr"></span><span class="nm">French</span><span class="addic">+</span></button>
+            <button class="cmenu-item add" data-fc="fc-de" data-name="German"><span class="fc fc-de"></span><span class="nm">German</span><span class="addic">+</span></button>
+            <button class="cmenu-item add" data-fc="fc-jp" data-name="Japanese"><span class="fc fc-jp"></span><span class="nm">Japanese</span><span class="addic">+</span></button>
+            <button class="cmenu-item add" data-fc="fc-it" data-name="Italian"><span class="fc fc-it"></span><span class="nm">Italian</span><span class="addic">+</span></button>
+            <button class="cmenu-item add" data-fc="fc-nl" data-name="Dutch"><span class="fc fc-nl"></span><span class="nm">Dutch</span><span class="addic">+</span></button>
+            <button class="cmenu-item add" data-fc="fc-ru" data-name="Russian"><span class="fc fc-ru"></span><span class="nm">Russian</span><span class="addic">+</span></button>
+            <button class="cmenu-item add" data-fc="fc-cn" data-name="Chinese"><span class="fc fc-cn"></span><span class="nm">Chinese</span><span class="addic">+</span></button>
+          </div>
         </div>
       </div>
       <div class="stat streak"><svg viewBox="0 0 24 24" fill="#F0A92B"><path d="M12 2c1 4-3 5-3 9a3 3 0 0 0 6 0c0-1-.5-2-.5-2 2 1 3.5 3 3.5 5.5A6 6 0 0 1 6 14c0-5 4-6 6-12z"/></svg>12</div>
@@ -406,34 +594,15 @@
         <div class="unitbar">
           <div class="ub-left">
             <button class="unitback" id="unitBack" aria-label="Back to sections"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
-            <button class="opensec" id="openSections">
-              <span class="ulabel">Section 2 · Unit 4 &nbsp;&#9662;</span>
-              <span class="utitle">Order food &amp; ask about drinks</span>
-            </button>
+            <div class="ub-titles">
+              <button class="ulabel-btn" id="unitMenuBtn"><span id="ulabel">A1 · Section 1 · Unit 1</span> &#9662;</button>
+              <button class="utitle-btn" id="openSections"><span class="utitle" id="utitle">First words</span></button>
+            </div>
           </div>
-          <button class="guidebook"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM19 3v16"/></svg>Guidebook</button>
+          <div class="unitmenu" id="unitMenu"></div>
         </div>
 
-        <div class="path">
-          <div class="node"><button class="nbtn done"><svg viewBox="0 0 24 24"><path d="m5 12 5 5L20 7"/></svg></button><span class="ntag">Lesson 1</span></div>
-          <div class="node"><button class="nbtn done"><svg viewBox="0 0 24 24"><path d="m5 12 5 5L20 7"/></svg></button><span class="ntag">Lesson 2</span></div>
-          <div class="node"><button class="nbtn story" data-lesson="story"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M9 7h7M9 11h7"/></svg></button><span class="ntag">Story</span></div>
-          <div class="node"><button class="nbtn chest"><svg viewBox="0 0 24 24"><path d="M3 9h18v10H3zM3 9l2-5h14l2 5M12 9v10M9 13h6"/></svg></button><span class="ntag">Chest</span></div>
-          <div class="node">
-            <button class="nbtn active" id="activeNode"><svg viewBox="0 0 24 24"><path d="m6 4 14 8-14 8z"/></svg></button>
-            <div class="start-pop" id="startPop">START</div>
-            <div class="npop" id="nodePopup">
-              <h4>Lesson 3 · Drinks</h4>
-              <p>Practice ordering and asking about drink options.</p>
-              <button class="btn btn-primary" data-lesson="lesson">Practice <b>+5 XP</b></button>
-              <button class="btn j2" data-lesson="lesson">Legendary +40 XP</button>
-            </div>
-            <span class="ntag">Lesson 3</span>
-          </div>
-          <div class="node"><button class="nbtn review lock" data-locked="Review · React to delivery issues"><svg viewBox="0 0 24 24"><path d="M9 11V8a3 3 0 0 1 6 0v3M6 11h12v9H6z"/></svg></button><span class="ntag">Review</span></div>
-          <div class="node"><button class="nbtn legend lock" data-locked="Legendary · Complete the levels above to unlock"><svg viewBox="0 0 24 24"><path d="m12 3 2.5 5 5.5.8-4 3.9.9 5.5L12 16l-4.9 2.2.9-5.5-4-3.9 5.5-.8z"/></svg></button><span class="ntag">Legendary</span></div>
-          <div class="node"><button class="nbtn lock" data-locked="Lesson 4 · Complete the levels above to unlock"><svg viewBox="0 0 24 24"><path d="M9 11V8a3 3 0 0 1 6 0v3M6 11h12v9H6z"/></svg></button><span class="ntag">Lesson 4</span></div>
-        </div>
+        <div id="sectionTree"></div>
        </div>
 
        <!-- Sections overview -->
@@ -490,7 +659,7 @@
 
       <!-- ════ SHOP ════ -->
       <section class="view hide" id="view-shop">
-        <div class="vhead"><h1><span class="em">Shop</span></h1><p>Spend gems, protect your streak, go ad-free.</p></div>
+        <div class="vhead"><h1><span class="em">Subscriptions</span></h1><p>Spend gems, protect your streak, go ad-free.</p></div>
         <div class="shopbanner"><div><h3>Try Tungo Pro free</h3><p>Unlimited hearts, no ads, target practice. 1 week free.</p></div><button class="btn btn-primary">Start trial</button></div>
         <div class="sectitle">Hearts</div>
         <div class="stack">
@@ -529,9 +698,129 @@
         </div>
         <div class="sectitle">Add friends</div>
         <div class="stack">
-          <div class="card row-card"><div class="ric ic-indigo"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4-4"/></svg></div><div class="rbody"><h4>Find friends</h4><p>Search by name or @handle.</p></div><button class="btn btn-ghost">Search</button></div>
-          <div class="card row-card"><div class="ric ic-mint"><svg viewBox="0 0 24 24"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v13"/></svg></div><div class="rbody"><h4>Invite friends</h4><p>Share your link, both get gems.</p></div><button class="btn btn-primary">Invite</button></div>
+          <div class="card row-card"><div class="ric ic-mint"><svg viewBox="0 0 24 24"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v13"/></svg></div><div class="rbody"><h4>Invite friends</h4><p>Share your link, both get gems.</p></div><button class="btn btn-primary" id="inviteBtn">Invite</button></div>
         </div>
+      </section>
+
+      <!-- ════ REFER & EARN ════ -->
+      <section class="view hide" id="view-refer">
+        <button class="back" id="referBack"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg> Back to profile</button>
+        <div class="vhead"><h1>Refer &amp; <span class="em">earn</span></h1><p>Invite friends to Tungo — they save, you earn real cash.</p></div>
+
+        <!-- YOUR CODE -->
+        <div class="sectitle">Your code</div>
+
+        <!-- First-time state: generate the code -->
+        <div class="card rf-gencard" id="refGenerate">
+          <div class="rf-genic"><svg viewBox="0 0 24 24"><path d="M20 12v9H4v-9M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></div>
+          <h4>Generate your referral code</h4>
+          <p>Create your unique code to start inviting friends — they get 51% off, you earn real cash on every purchase.</p>
+          <button class="btn btn-mag" id="genCodeBtn">Generate my code</button>
+        </div>
+
+        <!-- Shown after the code is generated -->
+        <div class="card rf-codecard hide" id="refCodeCard">
+          <div class="rf-coderow">
+            <div>
+              <span class="rf-codelabel">Your referral code</span>
+              <div class="rf-code" id="refCode">——————</div>
+            </div>
+            <button class="btn btn-mag rf-copy" data-copy="">Copy</button>
+          </div>
+          <div class="rf-linkrow">
+            <span class="rf-link" id="refLink">tungo.app/?uref=——————</span>
+            <button class="btn btn-ghost rf-copy" data-copy="">Copy link</button>
+          </div>
+          <div class="rf-share">
+            <button class="rf-sbtn rf-wa"    data-share="wa">📱 WhatsApp</button>
+            <button class="rf-sbtn rf-ms"    data-share="ms">💬 Messenger</button>
+            <button class="rf-sbtn rf-fb"    data-share="fb">📘 Facebook</button>
+            <button class="rf-sbtn rf-x"     data-share="x">🐦 X</button>
+          </div>
+        </div>
+
+        <!-- COMPLETE GUIDE -->
+        <div class="sectitle">Complete guide</div>
+
+        <!-- Intro banner -->
+        <div class="rf-intro">
+          <div class="rf-introic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></div>
+          <div>
+            <h4>Everything you need to know</h4>
+            <p>Follow this step-by-step guide to start earning real cash by referring friends to Tungo.</p>
+          </div>
+        </div>
+
+        <div class="rf-steps">
+          <!-- Step 1 -->
+          <div class="rf-step">
+            <span class="rf-num">1</span>
+            <div class="rf-body">
+              <h4>Copy your unique referral code or link</h4>
+              <p>Scroll up to the <b>Your code</b> section. Tap <b>Copy</b> next to your code, or copy your full referral link. Your link looks like: <code>tungo.app/?uref=XXXXXX</code></p>
+              <div class="rf-call rf-call-mint">
+                <svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+                <span><b>Tip:</b> Share the full link for easier access — no code needed!</span>
+              </div>
+            </div>
+          </div>
+          <!-- Step 2 -->
+          <div class="rf-step">
+            <span class="rf-num">2</span>
+            <div class="rf-body">
+              <h4>Share with friends on any platform</h4>
+              <p>Use the quick-share buttons (WhatsApp, Messenger, Facebook, X) or paste the link manually in any chat, group, or post.</p>
+              <div class="rf-pills">
+                <span class="rf-pill p-wa">📱 WhatsApp Groups</span>
+                <span class="rf-pill p-ms">💬 Messenger</span>
+                <span class="rf-pill p-fb">📘 Facebook</span>
+                <span class="rf-pill p-x">🐦 X / Twitter</span>
+              </div>
+            </div>
+          </div>
+          <!-- Step 3 -->
+          <div class="rf-step">
+            <span class="rf-num">3</span>
+            <div class="rf-body">
+              <h4>Your friend signs up &amp; gets 51% off</h4>
+              <p>When your friend taps your link and signs up, they're automatically tracked. When they buy any Tungo package, they instantly receive a <b>51% discount</b>.</p>
+              <div class="rf-call rf-call-green">
+                <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13A4 4 0 0 1 16 11"/></svg>
+                <span>No limit on how many friends you can refer!</span>
+              </div>
+            </div>
+          </div>
+          <!-- Step 4 -->
+          <div class="rf-step">
+            <span class="rf-num">4</span>
+            <div class="rf-body">
+              <h4>Earn 10% commission on every purchase</h4>
+              <p>You earn <b>10%</b> of your friend's first purchase as commission — yours to keep.</p>
+              <div class="rf-tiles">
+                <div class="rf-tile t-mag"><b>10%</b><span>Your commission</span></div>
+                <div class="rf-tile t-green"><b>51%</b><span>Friend's discount</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ -->
+        <h3 class="rf-faqlabel">Frequently asked questions</h3>
+        <div class="rf-faq">
+          <details class="rf-q">
+            <summary>Is there a limit to how many friends I can refer?<svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></summary>
+            <p>No limit at all! You can refer as many friends as you want. Each successful referral that makes a purchase earns you a 10% commission.</p>
+          </details>
+          <details class="rf-q">
+            <summary>What counts as a valid referral?<svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></summary>
+            <p>A valid referral is someone who (1) signs up using your unique referral link or code, and (2) completes a purchase of any Tungo package. Sign-ups alone without a purchase don't generate a commission.</p>
+          </details>
+          <details class="rf-q">
+            <summary>Can I refer someone who already has an account?<svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></summary>
+            <p>The referral system tracks new sign-ups. If your friend already has a Tungo account, they won't count as a new referral. Share your link with people who haven't signed up yet.</p>
+          </details>
+        </div>
+
       </section>
 
     </div>
@@ -596,8 +885,11 @@
       <div class="bank" id="bank"></div>
     </div>
     <div class="lfoot" id="lessonFoot">
-      <span class="fb" id="lessonFb"></span>
-      <button class="btn btn-primary" id="lessonCheck" style="margin-left:auto">Check</button>
+      <div class="lfoot-in">
+        <button class="skipbtn" id="lessonSkip" type="button">Skip</button>
+        <span class="fb" id="lessonFb"></span>
+        <button class="btn btn-primary" id="lessonCheck" type="button">Check</button>
+      </div>
     </div>
   </div>
 </div>
@@ -618,6 +910,86 @@
   document.querySelectorAll('[data-view]').forEach(function(b){ b.addEventListener('click', function(){ go(b.dataset.view); }); });
   document.querySelectorAll('[data-jump]').forEach(function(b){ b.addEventListener('click', function(){ go(b.dataset.jump); }); });
 
+  // ── Refer & earn ──
+  var REF_CODE = '', REF_LINK = '', codeGenerated = false;
+  var refGenerate = document.getElementById('refGenerate');
+  var refCodeCard = document.getElementById('refCodeCard');
+
+  function applyCodeState(){
+    // First time: show the generate prompt. After generating: show the code card.
+    if(refGenerate) refGenerate.classList.toggle('hide', codeGenerated);
+    if(refCodeCard) refCodeCard.classList.toggle('hide', !codeGenerated);
+  }
+  function makeCode(){
+    var alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', s = '';
+    for(var i=0;i<6;i++){ s += alphabet[Math.floor(Math.random()*alphabet.length)]; }
+    return s;
+  }
+  function generateCode(){
+    REF_CODE = makeCode();
+    REF_LINK = 'https://tungo.app/?uref=' + REF_CODE;
+    document.getElementById('refCode').textContent = REF_CODE;
+    document.getElementById('refLink').textContent = 'tungo.app/?uref=' + REF_CODE;
+    var copyBtns = refCodeCard.querySelectorAll('.rf-copy');
+    if(copyBtns[0]) copyBtns[0].dataset.copy = REF_CODE;
+    if(copyBtns[1]) copyBtns[1].dataset.copy = REF_LINK;
+    codeGenerated = true;
+    applyCodeState();
+    toast('Your code is ready: ' + REF_CODE);
+  }
+  var genBtn = document.getElementById('genCodeBtn');
+  if(genBtn) genBtn.addEventListener('click', function(){
+    if(genBtn.dataset.busy) return;
+    genBtn.dataset.busy = '1';
+    genBtn.textContent = 'Generating…';
+    setTimeout(function(){ generateCode(); }, 650); // brief generation feel
+  });
+
+  function openRefer(){
+    go('refer');
+    applyCodeState();
+    // keep Profile highlighted in the nav since Refer is reached from Profile
+    document.querySelectorAll('.navlink[data-view="profile"],.tabbar button[data-view="profile"]').forEach(function(b){ b.classList.add('on'); });
+  }
+  var inviteBtn = document.getElementById('inviteBtn');
+  if(inviteBtn) inviteBtn.addEventListener('click', openRefer);
+  var referBack = document.getElementById('referBack');
+  if(referBack) referBack.addEventListener('click', function(){ go('profile'); });
+
+  // tiny toast
+  var toastEl;
+  function toast(msg){
+    if(!toastEl){ toastEl = document.createElement('div'); toastEl.className = 'rf-toast'; document.body.appendChild(toastEl); }
+    toastEl.textContent = msg; toastEl.classList.add('show');
+    clearTimeout(toast._t); toast._t = setTimeout(function(){ toastEl.classList.remove('show'); }, 1800);
+  }
+  function copyText(text, label){
+    if(!text){ return; }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){ toast(label + ' copied!'); }, function(){ toast(label + ' copied!'); });
+    } else { toast(label + ' copied!'); }
+  }
+  document.querySelectorAll('.rf-copy').forEach(function(b){
+    b.addEventListener('click', function(){
+      var v = b.dataset.copy || '';
+      copyText(v, v.indexOf('http') === 0 ? 'Link' : 'Code');
+    });
+  });
+  // share buttons
+  document.querySelectorAll('[data-share]').forEach(function(b){
+    b.addEventListener('click', function(){
+      if(!REF_LINK){ return; }
+      var SHARE_MSG = 'Learn 9 languages on Tungo — explained in your own language. Sign up with my link and get 51% off: ' + REF_LINK;
+      var p = b.dataset.share, url = '';
+      if(p === 'wa') url = 'https://wa.me/?text=' + encodeURIComponent(SHARE_MSG);
+      else if(p === 'ms') url = 'https://www.facebook.com/dialog/send?link=' + encodeURIComponent(REF_LINK) + '&app_id=0&redirect_uri=' + encodeURIComponent(REF_LINK);
+      else if(p === 'fb') url = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(REF_LINK);
+      else if(p === 'x')  url = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(SHARE_MSG);
+      var w = window.open(url, '_blank', 'noopener');
+      if(!w) copyText(REF_LINK, 'Link'); // popups blocked → copy instead
+    });
+  });
+
   // ── Learn ⇄ Sections ──
   var learnMap = document.getElementById('learnMap'), sectionsView = document.getElementById('sectionsView');
   function showSections(){ learnMap.classList.add('hide'); sectionsView.classList.remove('hide'); window.scrollTo(0,0); }
@@ -628,10 +1000,20 @@
 
   // ── Placement test modal ──
   var testModal = document.getElementById('testModal'), testTitle = document.getElementById('testTitle');
+  var pendingJump = null;
   function closeTest(){ testModal.classList.remove('show'); }
-  function openTest(sec){ testTitle.textContent = 'Jump ahead to Section ' + sec; testModal.classList.add('show'); }
+  function openTest(lvCode, secIdx){
+    pendingJump = { lv:lvCode, sec:secIdx };
+    var s = SECTIONS[lvCode][secIdx];
+    testTitle.textContent = 'Jump ahead to ' + (s ? s.title : ('Section ' + (secIdx+1)));
+    testModal.classList.add('show');
+  }
   document.getElementById('testLater').addEventListener('click', closeTest);
-  document.getElementById('testTake').addEventListener('click', function(){ closeTest(); showMap(); });
+  document.getElementById('testTake').addEventListener('click', function(){
+    closeTest();
+    showMap();
+    if(pendingJump){ renderMap(pendingJump.lv, pendingJump.sec, null, true); pendingJump = null; }
+  });
   testModal.addEventListener('click', function(e){ if(e.target===testModal) closeTest(); });
 
   // ── CEFR levels → sections ──
@@ -643,10 +1025,274 @@
     {code:'C1', name:'Advanced',           desc:'Can use the language fluently in work and academic settings.',           title:'Speak spontaneously',    goal:'I feel comfortable and can speak spontaneously on many topics.',       units:180},
     {code:'C2', name:'Proficient (Mastery)',desc:'Can understand virtually everything and communicate like a highly proficient speaker.', title:'Total mastery', goal:'I can understand and express virtually anything with ease.', units:120}
   ];
-  var sel = 1; // default A2
+  var sel    = 0;  // selected level tab (default A1)
+  var CUR_LV = 0;  // the learner's current level (A1)
+  var CUR_SEC= 0;  // current section within that level
+  var CUR_PCT= 64; // progress through the current section
+
+  // Sections per CEFR level. Only the selected level's sections are shown.
+  var SECTIONS = {
+    A1:[
+      {title:'Getting started', goal:'Greetings, food, and getting around.', units:80, unitList:[
+        {name:'First words',    lessons:['Hello & goodbye','Polite basics','Asking names','Numbers 1–10','Yes, no & maybe','Everyday objects','Quick review']},
+        {name:'Café & food',    lessons:['Order a coffee','At the bakery','I\u2019d like\u2026','Fruits & snacks','Paying the bill','Likes & dislikes','Quick review']},
+        {name:'Getting around', lessons:['Where is\u2026?','Left & right','Taking the bus','Buying a ticket','Asking the time','Help, I\u2019m lost','Quick review']}
+      ]},
+      {title:'People & places', goal:'Family, home, and your neighbourhood.', units:70, unitList:[
+        {name:'Family ties',     lessons:['Meet the family','Brothers & sisters','Describing people','Whose is it?','Family routines','Visiting relatives','Quick review']},
+        {name:'Around the home', lessons:['Rooms of the house','Furniture & things','In the kitchen','Daily chores','My neighbourhood','Home or away','Quick review']},
+        {name:'Out & about',     lessons:['At the market','Clothes & colours','Weather talk','Making plans','At the park','A day out','Quick review']}
+      ]},
+      {title:'Daily basics', goal:'Numbers, time, and simple routines.', units:70, unitList:[
+        {name:'Time & numbers', lessons:['Numbers 11–100','Telling the time','Days of the week','Months & dates','How often?','Prices & money','Quick review']},
+        {name:'Daily routine',  lessons:['My morning','Work & school','Free time','Evening routine','Hobbies','Weekends','Quick review']},
+        {name:'Wrapping up',    lessons:['Small talk','On the phone','Making excuses','Quick questions','Putting it together','Real conversations','Section review']}
+      ]}
+    ],
+    A2:[
+      {title:'Everyday conversations',goal:'Small talk and everyday situations.',             units:60},
+      {title:'Out & about',          goal:'Shopping, travel, and directions.',               units:55},
+      {title:'Work & study',         goal:'Your job, school, and daily tasks.',              units:55},
+      {title:'Plans & invitations',  goal:'Making arrangements with friends.',               units:50},
+      {title:'Health & home',        goal:'Appointments, the body, and household life.',     units:40}
+    ],
+    B1:[
+      {title:'Express yourself',     goal:'Opinions, feelings, and preferences.',            units:70},
+      {title:'Stories & experiences',goal:'Talking about the past with confidence.',         units:65},
+      {title:'Future & goals',       goal:'Plans, hopes, and intentions.',                   units:65},
+      {title:'Problem solving',      goal:'Complaints, requests, and getting help.',         units:60}
+    ],
+    B2:[
+      {title:'Discuss anything',     goal:'Abstract topics and everyday debate.',            units:30},
+      {title:'News & media',         goal:'Current events and reporting.',                   units:28},
+      {title:'Work life',            goal:'Meetings, negotiation, and presentations.',       units:28},
+      {title:'Culture & society',    goal:'Traditions, art, and lifestyle.',                 units:26},
+      {title:'Arguments & opinions', goal:'Agreeing, disagreeing, and persuading.',          units:24},
+      {title:'Science & technology', goal:'Explaining how things work.',                     units:22},
+      {title:'Nuance & tone',        goal:'Formality, irony, and implication.',              units:22}
+    ],
+    C1:[
+      {title:'Speak spontaneously',  goal:'Fluent, flexible everyday use.',                  units:50},
+      {title:'Academic & professional',goal:'Formal writing and speech.',                    units:45},
+      {title:'Idioms & register',    goal:'Natural, idiomatic expression.',                  units:45},
+      {title:'Complex texts',        goal:'Analysing detailed, specialised material.',       units:40}
+    ],
+    C2:[
+      {title:'Total mastery',        goal:'Understand virtually everything you meet.',       units:24},
+      {title:'Subtlety & style',     goal:'Fine shades of meaning.',                         units:20},
+      {title:'Rhetoric & persuasion',goal:'Sophisticated, structured argument.',             units:20},
+      {title:'Literature & criticism',goal:'Interpret and discuss complex works.',           units:20},
+      {title:'Specialised fields',   goal:'Technical and domain-specific language.',         units:18},
+      {title:'Native-like fluency',  goal:'Effortless, precise expression.',                 units:18}
+    ]
+  };
   var ICON_UNITS = '<svg viewBox="0 0 24 24"><path d="m12 2 9 5-9 5-9-5zM3 12l9 5 9-5M3 17l9 5 9-5"/></svg>';
   var ICON_LOCK  = '<svg viewBox="0 0 24 24"><path d="M9 11V8a3 3 0 0 1 6 0v3M6 11h12v9H6z"/></svg>';
   var lvTabs = document.getElementById('lvTabs'), lvName = document.getElementById('lvName'), secwrap = document.getElementById('secwrap');
+
+  // ═══ Unit map engine ═══
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+  var SVG_CHECK = '<svg viewBox="0 0 24 24"><path d="m5 12 5 5L20 7"/></svg>';
+  var SVG_PLAY  = '<svg viewBox="0 0 24 24"><path d="m6 4 14 8-14 8z"/></svg>';
+  var SVG_LOCK2 = '<svg viewBox="0 0 24 24"><path d="M9 11V8a3 3 0 0 1 6 0v3M6 11h12v9H6z"/></svg>';
+  var SVG_BOOK  = '<svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M9 7h7M9 11h7"/></svg>';
+  var SVG_CHEST = '<svg viewBox="0 0 24 24"><path d="M3 9h18v10H3zM3 9l2-5h14l2 5M12 9v10M9 13h6"/></svg>';
+  var SVG_TROPHY= '<svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M6 4h12v4a6 6 0 0 1-12 0zM6 6H3v1a3 3 0 0 0 3 3M18 6h3v1a3 3 0 0 0-3 3"/></svg>';
+
+  var LESSON_BANK = ['Core phrases','Key vocabulary','Listening practice','Speaking practice','Reading skills','Useful verbs','Common questions','Describing things','Past & present','Making plans','Opinions & ideas','In conversation','Everyday situations','Role play','Pronunciation','Grammar focus','Quick drills','Real-world tasks','Comprehension','Building sentences'];
+  var UNIT_TOPICS = ['Greetings','Food & drink','Getting around','Family','Home life','Numbers','Telling time','Shopping','Weather','Directions','Travel basics','At a café','At the market','Daily routine','Hobbies','Health','Clothes & colours','Animals','Nature','Work talk','School days','Phone calls','Making plans','At a hotel','Transport','Money matters','Emotions','Body & face','The city','Countries','Languages','Sports','Music','Cooking','Restaurants','Holidays','Seasons','Furniture','Technology','Small talk'];
+  var ROMAN = ['','','II','III','IV','V','VI','VII','VIII','IX','X'];
+  function genLessons(seed){
+    var out = [];
+    for(var k=0;k<6;k++){ out.push(LESSON_BANK[(seed*7 + k) % LESSON_BANK.length]); }
+    out.push('Quick review');
+    return out;
+  }
+  function unitsFor(lvCode, secIdx){
+    var s = SECTIONS[lvCode][secIdx];
+    if(s._units) return s._units;
+    var authored = s.unitList ? s.unitList.length : 0;
+    var target = Math.max(authored, s.units || 8);   // section's unit count drives the map length
+    var out = [], used = {};
+    if(s.unitList){ s.unitList.forEach(function(u){ out.push(u); used[u.name.toLowerCase()] = 1; }); }
+    var ti = 0;
+    while(out.length < target){
+      var topic = UNIT_TOPICS[ti % UNIT_TOPICS.length];
+      var rnd = Math.floor(ti / UNIT_TOPICS.length);
+      var name = rnd === 0 ? topic : topic + ' ' + (ROMAN[Math.min(rnd+1, ROMAN.length-1)] || (rnd+1));
+      ti++;
+      if(used[name.toLowerCase()]) continue;
+      used[name.toLowerCase()] = 1;
+      out.push({ name: name, lessons: genLessons(out.length) });
+    }
+    s._units = out;
+    return out;
+  }
+
+  var MAP = { lv:'A1', sec:0, unit:0 };
+  // lessons completed per unit (0..7), keyed lv-sec-unit. A1·S1: unit 1 complete, unit 2 active.
+  var unitProgress = { 'A1-0-0': 6, 'A1-0-1': 3 };
+  var LPU = 6;   // lessons per unit; with the fixed Unit Review that's 7 nodes total
+  var sectionTree = document.getElementById('sectionTree');
+  var _blocks = [];
+  var ulabelEl = document.getElementById('ulabel'), utitleEl = document.getElementById('utitle');
+  var unitMenu = document.getElementById('unitMenu'), unitMenuBtn = document.getElementById('unitMenuBtn');
+  var unitbarEl = document.querySelector('#learnMap .unitbar');
+  var learnMapEl = document.getElementById('learnMap');
+  var lockTip = document.getElementById('lockTip');
+
+  // per-unit colours — 600-level brand shades, tuned so white text reads cleanly
+  var PALETTE = [
+    {c:'#0BA15C', d:'#087543', fg:'#FFFFFF'},   // green 600 (secondary)
+    {c:'#4458CE', d:'#33449E', fg:'#FFFFFF'},   // indigo 600
+    {c:'#159399', d:'#107176', fg:'#FFFFFF'},   // teal 600 (tertiary)
+    {c:'#B5780D', d:'#8C5C09', fg:'#FFFFFF'},   // amber 600
+    {c:'#D6157F', d:'#AC1267', fg:'#FFFFFF'},   // magenta 600 (primary)
+    {c:'#D12E25', d:'#A8241D', fg:'#FFFFFF'}    // ruby 600
+  ];
+  function progOf(lv,sec,u){ var k=lv+'-'+sec+'-'+u; return (k in unitProgress) ? unitProgress[k] : 0; }
+  function windX(i){ var pat = [0,72,116,72,0,-72,-116,-72]; return pat[i % pat.length]; }
+  var SVG_FF = '<svg viewBox="0 0 24 24"><path d="m4 5 8 7-8 7zM13 5l8 7-8 7z" fill="currentColor" stroke="none"/></svg>';
+  var SVG_RLOCK = '<svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M6 4h12v4a6 6 0 0 1-12 0zM6 6H3v1a3 3 0 0 0 3 3M18 6h3v1a3 3 0 0 0-3 3"/></svg>';
+
+  function buildUnit(lvCode, secIdx, ui, state){
+    var units = unitsFor(lvCode, secIdx), unit = units[ui];
+    var p = progOf(lvCode, secIdx, ui), pal = PALETTE[ui % PALETTE.length];
+    var h = '<div class="unit-block'+(state==='locked'?' locked':'')+'" data-ui="'+ui+'" style="--uc:'+pal.c+';--ucd:'+pal.d+';--ufg:'+pal.fg+'">';
+    if(ui > 0){ h += '<div class="unit-sep"><span>'+esc(unit.name)+'</span></div>'; }
+    h += '<div class="path">';
+    var ni = 0;
+    if(state === 'locked'){
+      h += '<div class="node jumpnode" style="transform:translateX('+windX(ni)+'px)">'
+        + '<span class="jumplabel">JUMP HERE?</span>'
+        + '<button class="nbtn jump" data-act="jump" data-lv="'+lvCode+'" data-sec="'+secIdx+'">'+SVG_FF+'</button>'
+        + '<span class="ntag">Unit '+(ui+1)+'</span></div>';
+      ni++;
+    }
+    for(var li=0; li<LPU; li++){
+      var nm = unit.lessons[li] || ('Lesson '+(li+1)), x = windX(ni), cls, glyph, extra='';
+      var done = (state==='complete') || (li < p), isActive = (state==='active' && li === p);
+      if(done){ cls='done'; glyph=SVG_CHECK; extra='data-act="open" data-name="'+esc(nm)+'"'; }
+      else if(isActive){ cls='active'; glyph=SVG_PLAY; extra='data-act="active" data-name="'+esc(nm)+'"'; }
+      else { cls='lock'; glyph=SVG_LOCK2; extra='data-locked="'+esc(nm)+' \u00b7 Complete the lessons above to unlock"'; }
+      var inner = '<button class="nbtn '+cls+'" '+extra+'>'+glyph+'</button>';
+      if(isActive){
+        inner += '<div class="start-pop">START</div>'
+          + '<div class="npop"><h4>'+esc(nm)+'</h4><p>Practice this lesson to keep your streak going.</p>'
+          + '<button class="btn btn-primary" data-act="popopen" data-name="'+esc(nm)+'">Practice <b>+5 XP</b></button>'
+          + '<button class="btn j2" data-act="popopen" data-name="'+esc(nm)+'">Legendary +40 XP</button></div>';
+      }
+      h += '<div class="node'+(isActive?' has-start':'')+'" style="transform:translateX('+x+'px)">'+inner+'<span class="ntag">'+esc(nm)+'</span></div>';
+      ni++;
+    }
+    // Unit review (fixed, last)
+    var rx = windX(ni);
+    if(state === 'complete' || p >= LPU){
+      h += '<div class="node" style="transform:translateX('+rx+'px)"><button class="nbtn ureview" data-act="open" data-name="Unit review \u00b7 '+esc(unit.name)+'">'+SVG_TROPHY+'</button><span class="ntag">Unit review</span></div>';
+    } else {
+      h += '<div class="node" style="transform:translateX('+rx+'px)"><button class="nbtn lock" data-locked="Unit review \u00b7 Finish all '+LPU+' lessons to unlock">'+SVG_RLOCK+'</button><span class="ntag">Unit review</span></div>';
+    }
+    return h + '</div></div>';
+  }
+
+  function activeUnitIndex(lvCode, secIdx){
+    var units = unitsFor(lvCode, secIdx);
+    for(var u=0; u<units.length; u++){ if(progOf(lvCode,secIdx,u) < LPU) return u; }
+    return units.length - 1;
+  }
+  function setBanner(ui){
+    var units = unitsFor(MAP.lv, MAP.sec);
+    ui = Math.max(0, Math.min(ui|0, units.length-1));
+    MAP.unit = ui;
+    var pal = PALETTE[ui % PALETTE.length];
+    unitbarEl.style.setProperty('--uc', pal.c);
+    unitbarEl.style.setProperty('--ucd', pal.d);
+    ulabelEl.textContent = MAP.lv+' \u00b7 Section '+(MAP.sec+1)+' \u00b7 Unit '+(ui+1);
+    utitleEl.textContent = units[ui].name;
+    unitMenu.querySelectorAll('.umrow').forEach(function(r){ r.classList.toggle('on', +r.dataset.unit === ui); });
+  }
+
+  function renderMap(lvCode, secIdx, scrollUnit, doScroll){
+    var units = unitsFor(lvCode, secIdx);
+    MAP = { lv:lvCode, sec:secIdx, unit:0 };
+    var act = activeUnitIndex(lvCode, secIdx);
+    sectionTree.innerHTML = units.map(function(u, ui){
+      var state = ui < act ? 'complete' : (ui === act ? 'active' : 'locked');
+      return buildUnit(lvCode, secIdx, ui, state);
+    }).join('');
+    _blocks = sectionTree.querySelectorAll('.unit-block');
+    unitMenu.innerHTML = units.map(function(u,i){
+      return '<button class="umrow" data-unit="'+i+'"><span class="umnum">'+(i+1)+'</span>'
+        + '<span class="umtext"><span>Unit '+(i+1)+'</span><b>'+esc(u.name)+'</b></span></button>';
+    }).join('');
+    var target = (scrollUnit == null) ? act : scrollUnit;
+    setBanner(target);
+    if(doScroll){ setTimeout(function(){ scrollToUnit(target); }, 30); }
+  }
+
+  function unitBlocks(){ return _blocks.length ? _blocks : (_blocks = sectionTree.querySelectorAll('.unit-block')); }
+  function scrollToUnit(ui){
+    var blocks = unitBlocks(); if(!blocks[ui]) return;
+    var y = blocks[ui].getBoundingClientRect().top + window.scrollY - 124;
+    window.scrollTo({ top: Math.max(0, y), behavior:'smooth' });
+  }
+  function updateBannerOnScroll(){
+    if(learnMapEl.classList.contains('hide')) return;
+    var blocks = unitBlocks(); if(!blocks.length) return;
+    var refY = unitbarEl.getBoundingClientRect().bottom + 6, cur = 0;
+    for(var i=0;i<blocks.length;i++){                // blocks are in vertical order
+      if(blocks[i].getBoundingClientRect().top <= refY) cur = i; else break;
+    }
+    if(cur !== MAP.unit) setBanner(cur);
+  }
+  var scrollTick = false;
+  window.addEventListener('scroll', function(){
+    if(scrollTick) return; scrollTick = true;
+    requestAnimationFrame(function(){ updateBannerOnScroll(); scrollTick = false; });
+  });
+
+  // unit dropdown → scroll to that unit
+  unitMenuBtn.addEventListener('click', function(e){ e.stopPropagation(); unitMenu.classList.toggle('open'); });
+  unitMenu.addEventListener('click', function(e){
+    var r = e.target.closest('[data-unit]'); if(!r) return;
+    unitMenu.classList.remove('open');
+    scrollToUnit(+r.dataset.unit);
+  });
+  document.addEventListener('click', function(e){ if(!unitMenu.contains(e.target) && !unitMenuBtn.contains(e.target)) unitMenu.classList.remove('open'); });
+
+  // node interactions (delegated)
+  function closeNpops(){
+    sectionTree.querySelectorAll('.npop.show').forEach(function(n){ n.classList.remove('show'); });
+    sectionTree.querySelectorAll('.start-pop').forEach(function(s){ s.style.visibility='visible'; });
+  }
+  function showLockTip(b){
+    var parts = (b.dataset.locked||'').split(' \u00b7 ');
+    lockTip.innerHTML = '<b>'+parts[0]+'</b>'+(parts[1]||'')+'<span class="lk">🔒 Locked</span>';
+    var r = b.getBoundingClientRect();
+    lockTip.style.left = Math.min(r.left, window.innerWidth-260) + 'px';
+    lockTip.style.top = (r.bottom + 8) + 'px';
+    lockTip.classList.add('show');
+  }
+  function hideTip(){ lockTip.classList.remove('show'); }
+  sectionTree.addEventListener('click', function(e){
+    var pop = e.target.closest('[data-act="popopen"]');
+    if(pop){ e.stopPropagation(); closeNpops(); openLesson(pop.dataset.name, unitOf(pop)); return; }
+    var btn = e.target.closest('.nbtn'); if(!btn) return;
+    if(btn.classList.contains('lock')){ e.stopPropagation(); showLockTip(btn); return; }
+    var act = btn.dataset.act;
+    if(act === 'active'){
+      e.stopPropagation();
+      var node = btn.parentNode, np = node.querySelector('.npop'), sp = node.querySelector('.start-pop');
+      var willShow = !np.classList.contains('show');
+      closeNpops();
+      if(willShow){ np.classList.add('show'); if(sp) sp.style.visibility='hidden'; }
+      return;
+    }
+    if(act === 'jump'){ e.stopPropagation(); openTest(btn.dataset.lv, +btn.dataset.sec); return; }
+    if(act === 'open'){ openLesson(btn.dataset.name, unitOf(btn)); return; }
+  });
+  function unitOf(el){ var bl = el.closest('.unit-block'); return bl ? (parseInt(bl.dataset.ui,10)||0) : 0; }
+  document.addEventListener('click', function(e){ if(!e.target.closest('.node')) closeNpops(); if(e.target.closest && !e.target.closest('.nbtn.lock')) hideTip(); });
 
   function renderLevels(){
     lvTabs.innerHTML = LEVELS.map(function(l,i){
@@ -654,24 +1300,34 @@
     }).join('');
     lvName.innerHTML = '<b>'+LEVELS[sel].code+' · '+LEVELS[sel].name+'</b><span class="lvdesc">'+LEVELS[sel].desc+'</span>';
 
-    var html = LEVELS.map(function(l,i){
-      var num=i+1, head='', body='';
-      if(i<sel){
-        head = '<span class="slabel">'+l.code+' · Section '+num+' · Complete</span><span class="unitline">'+ICON_UNITS+l.units+' units</span>';
-        body = '<div class="bar"><i style="width:100%"></i></div><button class="btn btn-ghost" style="margin-top:16px" data-backmap>Review section</button>';
-        return '<div class="seccard done">'+head+'<h3>'+l.title+'</h3><p class="goal">'+l.goal+'</p>'+body+'</div>';
-      } else if(i===sel){
-        head = '<span class="slabel">'+l.code+' · Section '+num+' · In progress</span><span class="unitline">'+ICON_UNITS+l.units+' units</span>';
-        body = '<div class="bar"><i style="width:64%"></i></div><div class="secfoot"><span class="pct">64%</span><button class="btn btn-primary" data-backmap>Continue</button></div>';
-        return '<div class="seccard active">'+head+'<h3>'+l.title+'</h3><p class="goal">'+l.goal+'</p>'+body+'</div>';
+    // Show ONLY the sections that belong to the selected CEFR level.
+    var L = LEVELS[sel].code, secs = SECTIONS[L];
+    secwrap.innerHTML = secs.map(function(s, i){
+      var num = i+1, state;
+      if(sel < CUR_LV)      state = 'done';                       // level already cleared
+      else if(sel > CUR_LV) state = (i===0 ? 'open' : 'locked');  // future level: start at section 1
+      else                  state = (i < CUR_SEC ? 'done' : (i===CUR_SEC ? 'active' : 'locked'));
+
+      var head, body, cls;
+      if(state === 'done'){
+        cls = 'done';
+        head = '<span class="slabel">'+L+' · Section '+num+' · Complete</span><span class="unitline">'+ICON_UNITS+s.units+' units</span>';
+        body = '<div class="bar"><i style="width:100%"></i></div><button class="btn btn-ghost" style="margin-top:16px" data-backmap data-open-lv="'+L+'" data-open-sec="'+i+'">Review section</button>';
+      } else if(state === 'active'){
+        cls = 'active';
+        head = '<span class="slabel">'+L+' · Section '+num+' · In progress</span><span class="unitline">'+ICON_UNITS+s.units+' units</span>';
+        body = '<div class="bar"><i style="width:'+CUR_PCT+'%"></i></div><div class="secfoot"><span class="pct">'+CUR_PCT+'%</span><button class="btn btn-primary" data-backmap data-open-lv="'+L+'" data-open-sec="'+i+'">Continue</button></div>';
+      } else if(state === 'open'){
+        cls = 'active';
+        head = '<span class="slabel">'+L+' · Section '+num+'</span><span class="unitline">'+ICON_UNITS+s.units+' units</span>';
+        body = '<div class="secfoot"><button class="btn btn-primary" data-backmap data-open-lv="'+L+'" data-open-sec="'+i+'">Start '+L+' →</button></div>';
       } else {
-        head = '<span class="lockline">'+ICON_LOCK+l.code+' · '+l.units+' units</span>';
-        body = '<button class="btn btn-ghost" data-jumpsec="'+num+'">Jump to section '+num+'</button>';
-        return '<div class="seccard locked">'+head+'<h3>'+l.title+'</h3><p class="goal">'+l.goal+'</p>'+body+'</div>';
+        cls = 'locked';
+        head = '<span class="lockline">'+ICON_LOCK+L+' · Section '+num+' · '+s.units+' units</span>';
+        body = '<button class="btn btn-ghost" data-jumpsec="'+i+'" data-jumplv="'+L+'">Jump to section '+num+'</button>';
       }
+      return '<div class="seccard '+cls+'">'+head+'<h3>'+s.title+'</h3><p class="goal">'+s.goal+'</p>'+body+'</div>';
     }).join('');
-    html += '<div class="seccard refresh"><span class="lockline">'+ICON_LOCK+'6 levels</span><h3>Daily Refresh</h3><p class="goal">Complete the course to unlock this section.</p></div>';
-    secwrap.innerHTML = html;
   }
   renderLevels();
 
@@ -681,25 +1337,15 @@
   });
   // delegation for re-rendered cards
   secwrap.addEventListener('click', function(e){
-    if(e.target.closest('[data-backmap]')){ showMap(); return; }
-    var js = e.target.closest('[data-jumpsec]'); if(js){ openTest(js.dataset.jumpsec); }
+    var bm = e.target.closest('[data-backmap]');
+    if(bm){
+      showMap();
+      if(bm.dataset.openLv){ renderMap(bm.dataset.openLv, +bm.dataset.openSec, null, true); }
+      return;
+    }
+    var js = e.target.closest('[data-jumpsec]'); if(js){ openTest(js.dataset.jumplv, +js.dataset.jumpsec); }
   });
 
-  // ── locked-node tooltip ──
-  var lockTip = document.getElementById('lockTip');
-  function hideTip(){ lockTip.classList.remove('show'); }
-  document.querySelectorAll('.nbtn.lock[data-locked]').forEach(function(b){
-    b.addEventListener('click', function(e){
-      e.stopPropagation();
-      var parts = b.dataset.locked.split(' · ');
-      lockTip.innerHTML = '<b>'+parts[0]+'</b>'+(parts[1]||'')+'<span class="lk">🔒 Locked</span>';
-      var r = b.getBoundingClientRect();
-      lockTip.style.left = Math.min(r.left, window.innerWidth-260) + 'px';
-      lockTip.style.top = (r.bottom + 8) + 'px';
-      lockTip.classList.add('show');
-    });
-  });
-  document.addEventListener('click', function(e){ if(e.target.closest && !e.target.closest('.nbtn.lock')) hideTip(); });
 
   // ── More dropdown ──
   var moreWrap = document.getElementById('moreWrap'), moreBtn = document.getElementById('moreBtn');
@@ -708,15 +1354,78 @@
 
   // ── course dropdown ──
   var cdd = document.getElementById('cdd'), courseBtn = document.getElementById('courseBtn');
+  var courseFlag = document.getElementById('courseFlag'), courseName = document.getElementById('courseName');
+  var learningList = document.getElementById('learningList'), addList = document.getElementById('addList');
+  var cmenu = cdd.querySelector('.cmenu'), courseEdit = document.getElementById('courseEdit');
+
   courseBtn.addEventListener('click', function(e){ e.stopPropagation(); cdd.classList.toggle('open'); });
-  cdd.querySelectorAll('.cmenu button').forEach(function(b){
-    b.addEventListener('click', function(){
-      document.getElementById('courseFlag').className = 'fc ' + b.dataset.fc;
-      document.getElementById('courseName').textContent = b.dataset.name;
-      cdd.classList.remove('open');
-    });
+
+  function setActive(btn){
+    if(!btn) return;
+    courseFlag.className = 'fc ' + btn.dataset.fc;
+    courseName.textContent = btn.dataset.name;
+    learningList.querySelectorAll('.cmenu-item').forEach(function(i){ i.classList.toggle('on', i === btn); });
+  }
+  function addRemoveControl(item){
+    if(item.querySelector('.rmv')) return;
+    var x = document.createElement('span');
+    x.className = 'rmv'; x.textContent = '×'; x.setAttribute('aria-label', 'Remove');
+    item.appendChild(x);
+  }
+  function makeLearningItem(fc, name){
+    var b = document.createElement('button');
+    b.className = 'cmenu-item'; b.dataset.fc = fc; b.dataset.name = name;
+    b.innerHTML = '<span class="fc ' + fc + '"></span><span class="nm">' + name + '</span><svg class="ck" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>';
+    addRemoveControl(b);
+    return b;
+  }
+  function makeAddItem(fc, name){
+    var b = document.createElement('button');
+    b.className = 'cmenu-item add'; b.dataset.fc = fc; b.dataset.name = name;
+    b.innerHTML = '<span class="fc ' + fc + '"></span><span class="nm">' + name + '</span><span class="addic">+</span>';
+    return b;
+  }
+  function exitEdit(){ cmenu.classList.remove('editing'); courseEdit.textContent = 'Edit'; }
+
+  // give the initial learning items a (hidden) remove control
+  learningList.querySelectorAll('.cmenu-item').forEach(addRemoveControl);
+
+  // learning list: pick the active course, or remove it in edit mode
+  learningList.addEventListener('click', function(e){
+    var item = e.target.closest('.cmenu-item'); if(!item) return;
+    if(e.target.closest('.rmv')){
+      e.stopPropagation();
+      if(learningList.querySelectorAll('.cmenu-item').length <= 1) return; // keep at least one
+      var wasActive = item.classList.contains('on');
+      addList.insertBefore(makeAddItem(item.dataset.fc, item.dataset.name), addList.firstChild);
+      item.remove();
+      if(wasActive) setActive(learningList.querySelector('.cmenu-item'));
+      return;
+    }
+    if(cmenu.classList.contains('editing')) return;
+    setActive(item);
+    cdd.classList.remove('open');
   });
-  document.addEventListener('click', function(e){ if(!cdd.contains(e.target)) cdd.classList.remove('open'); });
+
+  // add list: start learning a new language (moves it up and activates it)
+  addList.addEventListener('click', function(e){
+    var item = e.target.closest('.cmenu-item'); if(!item) return;
+    var learn = makeLearningItem(item.dataset.fc, item.dataset.name);
+    item.remove();
+    learningList.appendChild(learn);
+    setActive(learn);
+    exitEdit();
+    cdd.classList.remove('open');
+  });
+
+  // edit toggle
+  courseEdit.addEventListener('click', function(e){
+    e.stopPropagation();
+    cmenu.classList.toggle('editing');
+    courseEdit.textContent = cmenu.classList.contains('editing') ? 'Done' : 'Edit';
+  });
+
+  document.addEventListener('click', function(e){ if(!cdd.contains(e.target)){ cdd.classList.remove('open'); exitEdit(); } });
 
   // ── Letters grids ──
   var vowels = [['æ','cat',70],['iː','see',45],['ʊ','book',30],['ɔː','door',55],['ə','sofa',80],['eɪ','day',20],['aɪ','time',15],['oʊ','go',60]];
@@ -732,71 +1441,224 @@
     b.addEventListener('click', function(){ b.textContent='Claimed ✓'; b.classList.remove('btn-primary'); b.classList.add('btn-ghost'); b.disabled=true; });
   });
 
-  // ── Lesson modal + word-bank exercise ──
+  // ── Lesson engine (multi-exercise flow) ──
   var modal = document.getElementById('lessonModal');
-  var answerEl = document.getElementById('answer'), bankEl = document.getElementById('bank');
   var footEl = document.getElementById('lessonFoot'), fbEl = document.getElementById('lessonFb'), checkBtn = document.getElementById('lessonCheck');
   var heartsEl = document.getElementById('lessonHearts'), progEl = document.getElementById('lessonProgress'), bodyEl = document.getElementById('lessonBody');
-  var solution = ['¿Me','puedes','dar','un','agua,','por','favor?'];
-  var hearts = 5;
-
+  var skipBtn = document.getElementById('lessonSkip');
+  var SPK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5 6 9H2v6h4l5 4zM16 9a3 3 0 0 1 0 6M19 6a7 7 0 0 1 0 12"/></svg>';
+  var SUCCESS = ['Nice job!','Great job!','Correct!','Nicely done!','Excellent!','Amazing!'];
+  var CHECKPOINTS = ["You're off to a great start!","You're doing great!","Impressive stuff!"];
+  var EXERCISES = [
+    {type:'radio', q:'Waiting for the delivery always makes ___ nervous!', options:['I','me','my'], answer:'me'},
+    {type:'tiles', prompt:'Can I have a water, please?', solution:['¿Me','puedes','dar','agua,','por','favor?']},
+    {type:'radio', q:"I don't know ___ the party is.", options:['where','what','who'], answer:'where'},
+    {type:'chat', a:'👩', b:'🧑', ask:'¿Viajas siempre solo?', options:['No, esa no es mi comida.','No, es mi primera vez. ¡Estoy muy emocionado!'], answer:'No, es mi primera vez. ¡Estoy muy emocionado!'},
+    {type:'multi', q:'Which do you prefer? ___ or ___?', blanks:['Cash','card'], options:['Cash','card','coins','cheque']},
+    {type:'listen', text:'Necesito una mesa para dos.', answer:'I need a table for two'},
+    {type:'tiles', prompt:'I would like to order a coffee.', solution:['Quiero','pedir','un','café.']}
+  ];
   function shuffle(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i];a[i]=a[j];a[j]=t;} return a; }
-  function buildExercise(){
-    bodyEl.innerHTML = '<h3>Write this in Spanish</h3>'
-      + '<div class="prompt"><button class="spk" aria-label="Play audio"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M11 5 6 9H2v6h4l5 4zM16 9a3 3 0 0 1 0 6M19 6a7 7 0 0 1 0 12"/></svg></button><div class="txt">Can I have a water, please?</div></div>'
-      + '<div class="answer" id="answer"></div><div class="bank" id="bank"></div>';
-    answerEl = document.getElementById('answer'); bankEl = document.getElementById('bank');
-    bankEl.innerHTML = shuffle(solution).map(function(w,i){ return '<button class="tok" data-w="'+w+'">'+w+'</button>'; }).join('');
-    bankEl.querySelectorAll('.tok').forEach(function(t){
-      t.addEventListener('click', function(){
-        if(t.classList.contains('used')) return;
-        t.classList.add('used');
-        var chosen = document.createElement('button');
-        chosen.className='tok inans'; chosen.textContent=t.dataset.w;
-        chosen.addEventListener('click', function(){ chosen.remove(); t.classList.remove('used'); });
-        answerEl.appendChild(chosen);
-      });
-    });
-    footEl.className='lfoot'; fbEl.textContent=''; checkBtn.textContent='Check'; checkBtn.disabled=false;
-    checkBtn.onclick = checkAnswer;
+  function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
+  function wordSpans(text, lang){
+    return text.split(/(\s+)/).map(function(p){ return /^\s+$/.test(p) ? p : '<span class="cw" data-w="'+esc(p)+'" data-lang="'+(lang||'es-ES')+'">'+esc(p)+'</span>'; }).join('');
   }
-  function checkAnswer(){
-    var got = Array.prototype.map.call(answerEl.children, function(c){return c.textContent;}).join(' ').trim();
-    var want = solution.join(' ');
-    if(got === want){
-      footEl.className='lfoot ok'; fbEl.textContent='¡Correcto! Nicely done.';
-      checkBtn.textContent='Continue'; progEl.style.width='100%'; checkBtn.onclick=showSummary;
-    } else {
-      hearts = Math.max(0, hearts-1); heartsEl.textContent=hearts;
-      footEl.className='lfoot bad'; fbEl.textContent='Not quite — answer: '+want;
-      checkBtn.textContent='Got it'; checkBtn.onclick=function(){ buildExercise(); progEl.style.width='20%'; };
+  function norm(s){ return s.trim().toLowerCase().replace(/[.,!?¿¡]/g,''); }
+  function speak(text, lang, rate, btn){
+    if(!('speechSynthesis' in window)) return;
+    try{ window.speechSynthesis.cancel(); }catch(e){}
+    try{
+      var u = new SpeechSynthesisUtterance(text);
+      u.lang = lang || 'en-US'; u.rate = rate || 1;
+      if(btn){ btn.classList.add('playing'); u.onend=function(){ btn.classList.remove('playing'); }; u.onerror=function(){ btn.classList.remove('playing'); }; }
+      window.speechSynthesis.speak(u);
+    }catch(e){ if(btn) btn.classList.remove('playing'); }
+  }
+
+  var L = null;
+  function lessonCount(unitIdx){
+    unitIdx = unitIdx || 0;
+    var tier = Math.floor(unitIdx / 6);          // bump every 6 units
+    var n = 12 + tier * 4 + (unitIdx % 5);        // tier0: 12–16, tier1: 16–20, …
+    return Math.max(12, Math.min(50, n));         // floor 12, cap 50
+  }
+  function buildSeq(count){
+    count = count || 12;
+    var exs = [];
+    while(exs.length < count){
+      var batch = shuffle(EXERCISES);             // shuffle pool each pass to spread repeats
+      for(var i=0;i<batch.length && exs.length<count;i++) exs.push(batch[i]);
+    }
+    var seq = [];
+    exs.forEach(function(ex,i){
+      seq.push({kind:'ex', ex:ex});
+      if((i+1)%4===0 && i < exs.length-1){ seq.push({kind:'cp', msg:CHECKPOINTS[Math.floor(i/4) % CHECKPOINTS.length]}); }
+    });
+    return seq;
+  }
+  function openLesson(name, unitIdx){
+    L = { name:name||'Lesson', items:buildSeq(lessonCount(unitIdx)), pos:0, hearts:5, correct:0, asked:0, xp:0 };
+    heartsEl.textContent = L.hearts;
+    footEl.classList.remove('hide');
+    modal.classList.add('show');
+    renderItem();
+  }
+  function closeLesson(){ modal.classList.remove('show'); footEl.classList.remove('hide'); }
+  function setProgress(){ progEl.style.width = Math.round((L.pos / L.items.length)*100) + '%'; }
+  function footReset(){ footEl.className='lfoot'; fbEl.textContent=''; checkBtn.textContent='Check'; checkBtn.disabled=true; checkBtn.onclick=null; skipBtn.classList.remove('hide'); }
+  function enableCheck(fn){ checkBtn.disabled=false; checkBtn.onclick=fn; }
+  function advance(){ L.pos++; renderItem(); }
+  function feedback(ok, msg){
+    skipBtn.classList.add('hide');
+    if(ok){ L.correct++; L.xp += 8; footEl.className='lfoot ok'; fbEl.textContent = pick(SUCCESS); }
+    else { L.hearts = Math.max(0, L.hearts-1); heartsEl.textContent = L.hearts; footEl.className='lfoot bad'; fbEl.textContent = msg; }
+    checkBtn.disabled=false; checkBtn.textContent='Continue'; checkBtn.onclick=advance;
+  }
+  skipBtn.addEventListener('click', function(){ skipBtn.classList.add('hide'); advance(); });
+  bodyEl.addEventListener('click', function(e){
+    var w = e.target.closest('.cw'); if(w){ speak(w.dataset.w.replace(/[¿?¡!.,]/g,''), w.dataset.lang||'es-ES', 1, w); }
+  });
+  function renderItem(){
+    setProgress();
+    var item = L.items[L.pos];
+    if(!item){ return showComplete(); }
+    footReset();
+    if(item.kind==='cp'){ return renderCheckpoint(item); }
+    L.asked++;
+    var ex = item.ex;
+    if(ex.type==='radio') renderRadio(ex);
+    else if(ex.type==='tiles') renderTiles(ex);
+    else if(ex.type==='multi') renderMulti(ex);
+    else if(ex.type==='listen') renderListen(ex);
+    else if(ex.type==='chat') renderChat(ex);
+  }
+
+  function renderRadio(ex){
+    bodyEl.innerHTML = '<h4 class="qhead">Fill in the blank</h4>'
+      + '<div class="sentence">'+ex.q.replace('___','<span class="blk">&nbsp;</span>')+'</div>'
+      + '<div class="opts" id="opts">'+ shuffle(ex.options).map(function(o,i){ return '<button class="opt" type="button" data-v="'+esc(o)+'"><span class="num">'+(i+1)+'</span>'+esc(o)+'</button>'; }).join('') +'</div>';
+    var sel=null, blk=bodyEl.querySelector('.blk'), opts=bodyEl.querySelector('#opts');
+    opts.addEventListener('click', function(e){
+      var b = e.target.closest('.opt'); if(!b || b.disabled) return;
+      opts.querySelectorAll('.opt').forEach(function(x){ x.classList.remove('sel'); });
+      b.classList.add('sel'); sel=b;
+      b.classList.remove('pop'); void b.offsetWidth; b.classList.add('pop');   // restart pop
+      if(blk) blk.textContent = b.dataset.v;
+      enableCheck(check);
+    });
+    function check(){
+      if(!sel) return;
+      var ok = sel.dataset.v === ex.answer;
+      opts.querySelectorAll('.opt').forEach(function(x){ x.disabled=true; if(x.dataset.v===ex.answer) x.classList.add('correct'); });
+      if(!ok) sel.classList.add('wrong');
+      feedback(ok, 'Answer: '+ex.answer);
     }
   }
-  function showSummary(){
-    bodyEl.innerHTML = '<div class="lsummary"><div class="em" style="font-size:30px">¡Lección completa!</div>'
-      + '<h3>Lesson <span class="em">complete</span></h3>'
-      + '<div class="sumstats"><div class="sumstat"><b>+15</b><span>TOTAL XP</span></div><div class="sumstat"><b>92%</b><span>ACCURACY</span></div><div class="sumstat"><b>13</b><span>DAY STREAK</span></div></div>'
+  function renderTiles(ex){
+    bodyEl.innerHTML = '<h4 class="qhead">Translate this sentence</h4>'
+      + '<div class="prompt"><button class="spk">'+SPK+'</button><div class="txt">'+wordSpans(ex.prompt,'en-US')+'</div></div>'
+      + '<div class="answer" id="answer"></div><div class="bank" id="bank"></div>';
+    var answerEl=bodyEl.querySelector('#answer'), bankEl=bodyEl.querySelector('#bank');
+    var spk=bodyEl.querySelector('.spk');
+    if(spk) spk.addEventListener('click', function(){ speak(ex.prompt, 'en-US', 1, spk); });
+    bankEl.innerHTML = shuffle(ex.solution).map(function(w){ return '<button class="tok" data-w="'+esc(w)+'">'+esc(w)+'</button>'; }).join('');
+    function refresh(){ if(answerEl.children.length){ enableCheck(check); } else { checkBtn.disabled=true; } }
+    bankEl.querySelectorAll('.tok').forEach(function(t){
+      t.addEventListener('click', function(){
+        if(t.classList.contains('used')) return; t.classList.add('used');
+        var c=document.createElement('button'); c.className='tok inans'; c.textContent=t.dataset.w;
+        c.addEventListener('click', function(){ c.remove(); t.classList.remove('used'); refresh(); });
+        answerEl.appendChild(c); refresh();
+      });
+    });
+    function check(){
+      var got = Array.prototype.map.call(answerEl.children,function(c){return c.textContent;}).join(' ').trim();
+      feedback(got === ex.solution.join(' '), 'Answer: '+ex.solution.join(' '));
+    }
+  }
+  function renderMulti(ex){
+    var bi=0, html=ex.q.replace(/___/g, function(){ bi++; return '<span class="blk" data-b="'+(bi-1)+'">&nbsp;</span>'; });
+    bodyEl.innerHTML = '<h4 class="qhead">Fill in the blanks</h4><div class="sentence">'+html+'</div>'
+      + '<div class="bank" id="bank">'+ shuffle(ex.options).map(function(o){ return '<button class="tok" data-w="'+esc(o)+'">'+esc(o)+'</button>'; }).join('') +'</div>';
+    var picks=[], blanks=bodyEl.querySelectorAll('.blk');
+    function resetPicks(){ picks.forEach(function(p){ p.t.classList.remove('used'); }); picks=[]; blanks.forEach(function(b){ b.textContent='\u00a0'; }); checkBtn.disabled=true; }
+    bodyEl.querySelectorAll('#bank .tok').forEach(function(t){
+      t.addEventListener('click', function(){
+        if(t.classList.contains('used') || picks.length>=2) return;
+        t.classList.add('used'); picks.push({w:t.dataset.w, t:t}); blanks[picks.length-1].textContent=t.dataset.w;
+        if(picks.length===2) enableCheck(check);
+      });
+    });
+    blanks.forEach(function(bl){ bl.addEventListener('click', resetPicks); });
+    function check(){
+      var ok = picks.length===2 && picks[0].w===ex.blanks[0] && picks[1].w===ex.blanks[1];
+      feedback(ok, 'Answer: '+ex.blanks.join(' / '));
+    }
+  }
+  function renderListen(ex){
+    bodyEl.innerHTML = '<h4 class="qhead">Type what you hear</h4>'
+      + '<div class="listen-row"><button class="audiobtn" id="aud">'+SPK+' Play</button><button class="audiobtn slow" id="auds">'+SPK+' Slow</button></div>'
+      + '<textarea class="ltext" id="ltext" placeholder="Type in English"></textarea>';
+    var ta=bodyEl.querySelector('#ltext');
+    var aud=bodyEl.querySelector('#aud'), auds=bodyEl.querySelector('#auds');
+    aud.addEventListener('click', function(){ speak(ex.text, 'es-ES', 1, aud); });
+    auds.addEventListener('click', function(){ speak(ex.text, 'es-ES', 0.55, auds); });
+    speak(ex.text, 'es-ES', 1, aud);   // auto-play once on load
+    ta.addEventListener('input', function(){ if(ta.value.trim()){ enableCheck(check); } else { checkBtn.disabled=true; } });
+    function check(){ feedback(norm(ta.value)===norm(ex.answer), 'Answer: '+ex.answer); }
+  }
+  function renderChat(ex){
+    bodyEl.innerHTML = '<h4 class="qhead">Complete the chat</h4>'
+      + '<div class="chat">'
+      +   '<div class="chat-row left"><div class="avatar avA">'+ex.a+'</div>'
+      +     '<div class="bubble bubble-left"><button class="spk-sm" id="chatspk" type="button" aria-label="Play">'+SPK+'</button><span class="chat-line">'+wordSpans(ex.ask,'es-ES')+'</span></div></div>'
+      +   '<div class="chat-row right"><div class="bubble bubble-right reply-blank" id="reply"><span class="blk">&nbsp;</span></div><div class="avatar avB">'+ex.b+'</div></div>'
+      + '</div>'
+      + '<div class="opts" id="opts">'+ shuffle(ex.options).map(function(o,i){ return '<button class="opt" type="button" data-v="'+esc(o)+'"><span class="num">'+(i+1)+'</span>'+esc(o)+'</button>'; }).join('') +'</div>';
+    var sel=null, reply=bodyEl.querySelector('#reply'), opts=bodyEl.querySelector('#opts');
+    bodyEl.querySelector('#chatspk').addEventListener('click', function(){ speak(ex.ask,'es-ES',1,this); });
+    speak(ex.ask, 'es-ES', 1, bodyEl.querySelector('#chatspk'));   // auto-play the question once
+    opts.addEventListener('click', function(e){
+      var b=e.target.closest('.opt'); if(!b||b.disabled) return;
+      opts.querySelectorAll('.opt').forEach(function(x){ x.classList.remove('sel'); });
+      b.classList.add('sel'); sel=b; b.classList.remove('pop'); void b.offsetWidth; b.classList.add('pop');
+      reply.textContent = b.dataset.v;
+      enableCheck(check);
+    });
+    function check(){
+      if(!sel) return;
+      var ok = sel.dataset.v===ex.answer;
+      opts.querySelectorAll('.opt').forEach(function(x){ x.disabled=true; if(x.dataset.v===ex.answer) x.classList.add('correct'); });
+      if(!ok) sel.classList.add('wrong');
+      feedback(ok, 'Answer: '+ex.answer);
+    }
+  }
+  function renderCheckpoint(item){
+    skipBtn.classList.add('hide');
+    bodyEl.innerHTML = '<div class="checkpoint"><div class="lmascot">🎉</div><h3>'+esc(item.msg)+'</h3><p>Keep it up — you\u2019re making great progress.</p></div>';
+    footEl.className='lfoot'; fbEl.textContent=''; checkBtn.disabled=false; checkBtn.textContent='Continue'; checkBtn.onclick=advance;
+  }
+  function showComplete(){
+    progEl.style.width='100%';
+    var pct = L.asked ? Math.round((L.correct/L.asked)*100) : 100;
+    var rating = pct>=90?'AMAZING':(pct>=70?'GREAT':'GOOD');
+    bodyEl.innerHTML = '<div class="lsummary"><div class="lmascot">🏆</div>'
+      + '<h3>Lesson <span class="em" style="color:#B5780D">complete!</span></h3>'
+      + '<div class="sumstats">'
+      + '<div class="sumstat"><b>+'+L.xp+'</b><span>TOTAL XP</span></div>'
+      + '<div class="sumstat"><b>'+pct+'%</b><span>'+rating+'</span></div>'
+      + '<div class="sumstat"><b>'+L.hearts+'/5</b><span>HEARTS</span></div></div>'
       + '<button class="btn btn-primary" id="lessonDone" style="width:100%">Continue</button></div>';
     footEl.classList.add('hide');
-    document.getElementById('lessonDone').addEventListener('click', closeLesson);
+    bodyEl.querySelector('#lessonDone').addEventListener('click', closeLesson);
   }
-  function openLesson(){ hearts=5; heartsEl.textContent=hearts; progEl.style.width='20%'; footEl.classList.remove('hide'); buildExercise(); modal.classList.add('show'); }
-  function closeLesson(){ modal.classList.remove('show'); footEl.classList.remove('hide'); }
   document.getElementById('lessonClose').addEventListener('click', closeLesson);
   modal.addEventListener('click', function(e){ if(e.target===modal) closeLesson(); });
-  document.querySelectorAll('[data-lesson]').forEach(function(b){ b.addEventListener('click', function(e){ e.stopPropagation(); document.getElementById('nodePopup').classList.remove('show'); openLesson(); }); });
 
-  // ── active node popup ──
-  var activeNode = document.getElementById('activeNode'), nodePopup = document.getElementById('nodePopup'), startPop = document.getElementById('startPop');
-  activeNode.addEventListener('click', function(e){
-    e.stopPropagation();
-    var show = nodePopup.classList.toggle('show');
-    startPop.style.visibility = show ? 'hidden' : 'visible';
-  });
-  document.addEventListener('click', function(e){
-    if(!nodePopup.contains(e.target) && e.target!==activeNode){ nodePopup.classList.remove('show'); startPop.style.visibility='visible'; }
-  });
-  document.addEventListener('keydown', function(e){ if(e.key==='Escape'){ closeLesson(); closeTest(); hideTip(); nodePopup.classList.remove('show'); startPop.style.visibility='visible'; } });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape'){ closeLesson(); closeTest(); hideTip(); closeNpops(); unitMenu.classList.remove('open'); } });
+
+  // initial map: the learner's active position (A1 · Section 1)
+  renderMap('A1', 0, 0, false);
 })();
 </script>
 </body>
